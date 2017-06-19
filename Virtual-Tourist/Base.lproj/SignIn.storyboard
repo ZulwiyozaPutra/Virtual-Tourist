@@ -130,11 +130,9 @@
                     </view>
                     <connections>
                         <outlet property="emailTextField" destination="PiA-cA-VOl" id="s6n-fh-mg0"/>
-                        <outlet property="logInButton" destination="fKD-3d-qSh" id="IXt-q3-g7t"/>
                         <outlet property="passwordTextField" destination="R96-zP-xli" id="2ov-Hb-vJO"/>
                         <outlet property="signInButton" destination="fKD-3d-qSh" id="Fxp-jN-3wd"/>
                         <outlet property="signUpButton" destination="ARh-ta-6CA" id="hrI-LZ-5d6"/>
-                        <outlet property="thirdQuarterView" destination="zs5-XE-JbD" id="8wl-zM-Yiy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gok-nb-rJc" sceneMemberID="firstResponder"/>
