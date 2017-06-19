@@ -20,7 +20,6 @@ class SignInViewController: ViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         signInButton.addTarget(self, action: #selector(signIn), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(signUp), for: .touchUpInside)
 
@@ -28,7 +27,14 @@ class SignInViewController: ViewController {
     
     func signIn() -> Bool {
         print("Sign In Button Tapped")
-        return false
+        let areRequiredTextFieldsEmpty = isTextFieldEmpty(textField: emailTextField) || isTextFieldEmpty(textField: passwordTextField)
+        if areRequiredTextFieldsEmpty {
+            print("Text Field is Empty")
+            return false
+        } else {
+            print("Signing In")
+            return true
+        }
     }
     
     func signUp() -> Bool {

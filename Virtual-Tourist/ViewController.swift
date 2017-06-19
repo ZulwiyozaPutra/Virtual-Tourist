@@ -8,24 +8,29 @@
 
 import UIKit
 
+enum UIActivityState {
+    case normal
+    case loading
+}
+
 class ViewController: UIViewController {
+    
+    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+    let activityIndicatorBackgroundView = UIView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        keyboardShouldResign()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
+    
 }
 
 extension ViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+    func isTextFieldEmpty(textField: UITextField) -> Bool {
+        if (textField.text?.isEmpty)!  {
+            return true
+        } else {
+            return false
+        }
     }
 }
-
