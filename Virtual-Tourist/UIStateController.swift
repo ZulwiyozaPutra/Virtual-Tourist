@@ -8,9 +8,7 @@
 
 import UIKit
 
-
-
-class UIStateController: ViewController {
+extension ViewController {
     
     enum UIActivityState {
         case normal
