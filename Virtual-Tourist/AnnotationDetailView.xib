@@ -12,7 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="gHB-e5-g9i" customClass="AnnotationDetailView" customModule="Virtual_Tourist" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="178"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="168"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xth-2P-At8">
@@ -25,23 +25,23 @@
                     </state>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Marked Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Rl-ec-rj8">
-                    <rect key="frame" x="16" y="16" width="191" height="29"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                    <rect key="frame" x="16" y="16" width="168" height="25.5"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="YUk-zD-9HW">
-                    <rect key="frame" x="16" y="61" width="343" height="41"/>
+                    <rect key="frame" x="16" y="57.5" width="343" height="34"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="San Francisco, CA 94102" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztO-zv-4JI">
-                            <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <rect key="frame" x="0.0" y="0.0" width="343" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="United States" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g8B-me-Ofi">
-                            <rect key="frame" x="0.0" y="20.5" width="343" height="20.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <rect key="frame" x="0.0" y="17" width="343" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -54,7 +54,7 @@
                     </constraints>
                 </stackView>
                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5sI-iF-i4f">
-                    <rect key="frame" x="16" y="118" width="343" height="40"/>
+                    <rect key="frame" x="16" y="107.5" width="343" height="40"/>
                     <color key="backgroundColor" red="0.25011119250000002" green="0.50406491760000005" blue="0.99853926900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="6oh-LV-r0m"/>
@@ -83,9 +83,12 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="dismissButton" destination="Xth-2P-At8" id="19e-BR-CAT"/>
+                <outlet property="firstLineSubtitle" destination="ztO-zv-4JI" id="TcE-Xd-ImX"/>
+                <outlet property="secondLineSubtitle" destination="g8B-me-Ofi" id="z3C-dI-cwv"/>
                 <outlet property="showPhotosButton" destination="5sI-iF-i4f" id="5PA-if-LSc"/>
+                <outlet property="titleLabel" destination="2Rl-ec-rj8" id="dlC-xQ-U3N"/>
             </connections>
-            <point key="canvasLocation" x="-172.5" y="306"/>
+            <point key="canvasLocation" x="-172.5" y="301"/>
         </view>
     </objects>
 </document>

@@ -13,11 +13,13 @@ class MainViewController: ViewController {
     
     let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: nil)
     
-    var annotationDetailView = UIView()
+    var annotationDetailView = AnnotationDetailView()
     
     var editMode = false
     
     var annotations: [MKPointAnnotation]? = nil
+    
+    var annotation: MKPointAnnotation? = nil
 
     @IBOutlet weak var mapView: MKMapView!
     
@@ -33,7 +35,7 @@ class MainViewController: ViewController {
         mapView.delegate = self
     }
     
-    func instanceFromNib() -> UIView {
+    func instanceFromNib() -> AnnotationDetailView {
         let instance = UINib(nibName: "AnnotationDetailView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! AnnotationDetailView
         
         let path = UIBezierPath(roundedRect:instance.bounds, byRoundingCorners:[.topRight, .topLeft], cornerRadii: CGSize(width: 10, height: 10))
@@ -43,11 +45,42 @@ class MainViewController: ViewController {
         
         instance.layer.mask = maskLayer
         instance.dismissButton.addTarget(self, action: #selector(dismissAnnotationDetailView), for: .touchUpInside)
+        instance.showPhotosButton.addTarget(self, action: #selector(presentPhotosViewController), for: .touchUpInside)
         return instance
+    }
+    
+    func presentPhotosViewController() {
+        performSegue(withIdentifier: "Show Photos", sender: nil)
+        mapView.deselectAnnotation(annotation, animated: false)
     }
     
     func dismissAnnotationDetailView() {
         annotationDetailView.removeFromSuperview()
+    }
+    
+    func getLocation(completion: @escaping (_ placemark: CLPlacemark) -> Void) {
+        
+        let geoCoder = CLGeocoder()
+        
+        self.state(state: .loading)
+        
+        let location = CLLocation(latitude: annotation!.coordinate.latitude, longitude: annotation!.coordinate.longitude)
+        geoCoder.reverseGeocodeLocation(location) { (placemarks: [CLPlacemark]?, error: Error?) in
+            guard error == nil else {
+                self.presentErrorAlertController("Couldn't Find Location", alertMessage: "\(error.debugDescription), Please Try Again")
+                return
+            }
+            
+            guard placemarks != nil else {
+                self.presentErrorAlertController("Couldn't Find Location", alertMessage: "Please Try Again")
+                return
+            }
+            
+            self.state(state: .normal)
+            
+            completion(placemarks![0])
+            
+        }
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -93,10 +126,17 @@ extension MainViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        print("annotation is tapped")
+        
         if !editMode {
-            annotationDetailView.frame = CGRect(x: 0, y: self.view.frame.height - 178, width: self.view.frame.width, height: self.view.frame.height)
-            self.view.addSubview(annotationDetailView)
+            annotationDetailView.frame = CGRect(x: 0, y: self.view.frame.height - 168, width: self.view.frame.width, height: self.view.frame.height)
+            self.annotation = view.annotation! as? MKPointAnnotation
+            
+            getLocation(completion: { (placemark: CLPlacemark) in
+                self.annotationDetailView.firstLineSubtitle.text = "\(String(describing: placemark.locality!)), \(placemark.administrativeArea ?? "") \(placemark.postalCode ?? "")"
+                self.annotationDetailView.secondLineSubtitle.text = placemark.country
+                self.view.addSubview(self.annotationDetailView)
+            })
+            
         } else {
             mapView.removeAnnotation(view.annotation!)
         }
@@ -107,6 +147,7 @@ extension MainViewController: MKMapViewDelegate {
         guard let annotation = view.annotation else { return }
         
         mapView.deselectAnnotation(annotation, animated: true)
+        self.annotation = nil
     }
 }
 

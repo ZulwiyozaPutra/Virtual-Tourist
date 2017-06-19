@@ -13,6 +13,9 @@ class AnnotationDetailView: UIView {
 
     let annotation = MKPointAnnotation()
     
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var firstLineSubtitle: UILabel!
+    @IBOutlet weak var secondLineSubtitle: UILabel!
     @IBOutlet weak var showPhotosButton: UIButton!
     @IBOutlet weak var dismissButton: UIButton!
     

@@ -1,5 +1,5 @@
 //
-//  PhotoCollectionViewController.swift
+//  PhotosViewController.swift
 //  Virtual-Tourist
 //
 //  Created by Zulwiyoza Putra on 6/19/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PhotoCollectionViewController: UIViewController {
+class PhotosViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
