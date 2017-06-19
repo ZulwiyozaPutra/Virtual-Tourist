@@ -8,11 +8,6 @@
 
 import UIKit
 
-enum UIActivityState {
-    case normal
-    case loading
-}
-
 class ViewController: UIViewController {
     
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)

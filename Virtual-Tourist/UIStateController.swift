@@ -8,7 +8,15 @@
 
 import UIKit
 
+
+
 class UIStateController: ViewController {
+    
+    enum UIActivityState {
+        case normal
+        case loading
+    }
+    
     func state(state: UIActivityState) {
         switch state {
             

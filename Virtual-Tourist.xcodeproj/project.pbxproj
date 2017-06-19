@@ -126,9 +126,7 @@
 				6E31C4DD1EF7FAC900D07327 /* AlertViewController.swift */,
 				6E31C4DF1EF7FAEA00D07327 /* ThreadController.swift */,
 				6E31C4D91EF7F79C00D07327 /* KeyboardController.swift */,
-				6E31C4D01EF7EDDF00D07327 /* SignInViewController.swift */,
-				6E31C4D51EF7EFFC00D07327 /* InitialViewController.swift */,
-				6E31C4D71EF7F1A500D07327 /* MainViewController.swift */,
+				6E31C4E31EF7FC4400D07327 /* View Controller */,
 				6E31C4A11EF7EC6900D07327 /* Main.storyboard */,
 				6E31C4D21EF7EFE900D07327 /* Initial.storyboard */,
 				6E31C4CE1EF7ED8700D07327 /* SignIn.storyboard */,
@@ -156,6 +154,16 @@
 				6E31C4C21EF7EC6900D07327 /* Info.plist */,
 			);
 			path = "Virtual-TouristUITests";
+			sourceTree = "<group>";
+		};
+		6E31C4E31EF7FC4400D07327 /* View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6E31C4D51EF7EFFC00D07327 /* InitialViewController.swift */,
+				6E31C4D01EF7EDDF00D07327 /* SignInViewController.swift */,
+				6E31C4D71EF7F1A500D07327 /* MainViewController.swift */,
+			);
+			name = "View Controller";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
