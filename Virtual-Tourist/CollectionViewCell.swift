@@ -28,7 +28,7 @@ class CollectionViewCell: UICollectionViewCell {
     
     //Download Images
     
-    func downloadImage(_ flickrImage: FlickrImage) {
+    private func downloadImage(_ flickrImage: FlickrImage) {
         
         let url = URL(string: flickrImage.imageURL)
         

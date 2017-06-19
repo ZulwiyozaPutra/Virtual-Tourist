@@ -10,16 +10,37 @@ import Foundation
 import UIKit
 
 extension PhotosViewController: UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Photo's Cell", for: indexPath) as! CollectionViewCell
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! CollectionViewCell
-        
-        cell.activityIndicator.startAnimating()
-        // Set Images
-        return cell
+        if (flickrImages != nil) {
+            cell.activityIndicator.startAnimating()
+            cell.initWithPhoto((flickrImages?[indexPath.row])!)
+            return cell
+        } else {
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        if (flickrImages != nil) {
+            return (flickrImages?.count)!
+        } else {
+            return 0
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let spacingBetweenItems: CGFloat = 5.0
+        let width = (UIScreen.main.bounds.width / 3) - spacingBetweenItems
+        let height = width
+        
+        if (flickrImages != nil) {
+            return CGSize(width: width, height: height)
+        } else {
+            return CGSize(width: width, height: height)
+        }
     }
 }
