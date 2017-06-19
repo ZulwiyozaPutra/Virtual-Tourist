@@ -87,6 +87,9 @@
                             <constraint firstAttribute="trailing" secondItem="7D8-69-NVf" secondAttribute="trailing" id="sB0-cQ-RIu"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="collectionView" destination="7D8-69-NVf" id="S24-g1-gDN"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I21-8t-xeG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

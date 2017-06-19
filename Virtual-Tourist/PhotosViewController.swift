@@ -7,13 +7,19 @@
 //
 
 import UIKit
+import MapKit
 
 class PhotosViewController: UIViewController {
 
+    @IBOutlet weak var collectionView: UICollectionView!
+    var flickrImages: [FlickrImage]? = nil
+    var location: CLLocation? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        FlickrClient.getFlickrImages(location: self.location!) { (error: Error?, flickrImages: [FlickrImage]?) in
+            self.flickrImages = flickrImages!
+        }
     }
 
     override func didReceiveMemoryWarning() {

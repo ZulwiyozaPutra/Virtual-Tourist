@@ -20,6 +20,8 @@ class MainViewController: ViewController {
     var annotations: [MKPointAnnotation]? = nil
     
     var annotation: MKPointAnnotation? = nil
+    
+    var location: CLLocation? = nil
 
     @IBOutlet weak var mapView: MKMapView!
     
@@ -56,6 +58,7 @@ class MainViewController: ViewController {
     
     func dismissAnnotationDetailView() {
         annotationDetailView.removeFromSuperview()
+        self.location = nil
     }
     
     func getLocation(completion: @escaping (_ placemark: CLPlacemark) -> Void) {
@@ -97,8 +100,9 @@ class MainViewController: ViewController {
 
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        let photosViewController = segue.destination as? PhotosViewController
+        photosViewController?.location = self.location
+        
     }
 
 }
@@ -116,7 +120,6 @@ extension MainViewController: MKMapViewDelegate {
             pinAnnotationView!.annotation = annotation
             pinAnnotationView!.animatesDrop = true
         }
-        
         return pinAnnotationView
         
     }
@@ -128,13 +131,19 @@ extension MainViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
         if !editMode {
-            annotationDetailView.frame = CGRect(x: 0, y: self.view.frame.height - 168, width: self.view.frame.width, height: self.view.frame.height)
+            annotationDetailView.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: self.view.frame.height)
             self.annotation = view.annotation! as? MKPointAnnotation
             
             getLocation(completion: { (placemark: CLPlacemark) in
                 self.annotationDetailView.firstLineSubtitle.text = "\(String(describing: placemark.locality!)), \(placemark.administrativeArea ?? "") \(placemark.postalCode ?? "")"
                 self.annotationDetailView.secondLineSubtitle.text = placemark.country
+                
+                self.location = placemark.location
                 self.view.addSubview(self.annotationDetailView)
+                
+                UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseIn, animations: {
+                    self.annotationDetailView.frame.origin.y -= 168
+                }, completion: nil)
             })
             
         } else {
