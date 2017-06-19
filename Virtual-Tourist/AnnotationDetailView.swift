@@ -25,7 +25,5 @@ class AnnotationDetailView: UIView {
         showPhotosButton.layer.cornerRadius = 10
     }
     
-    //            performSegue(withIdentifier: "ShowCollections", sender: view.annotation?.coordinate)
-    //            mapView.deselectAnnotation(view.annotation, animated: false)
-
+    
 }

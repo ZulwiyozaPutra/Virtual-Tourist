@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CollectionViewCell" customModule="Virtual_Tourist" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="204" height="202"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="204" height="202"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sOE-Nf-Dad">
+                        <rect key="frame" x="0.0" y="0.0" width="204" height="202"/>
+                    </imageView>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="983-Wk-z59">
+                        <rect key="frame" x="92" y="91" width="20" height="20"/>
+                    </activityIndicatorView>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="983-Wk-z59" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Chw-fA-EOF"/>
+                <constraint firstAttribute="bottom" secondItem="sOE-Nf-Dad" secondAttribute="bottom" id="Fx7-br-W70"/>
+                <constraint firstItem="sOE-Nf-Dad" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="GTq-eL-9XD"/>
+                <constraint firstAttribute="trailing" secondItem="sOE-Nf-Dad" secondAttribute="trailing" id="xX5-Cd-IaK"/>
+                <constraint firstItem="sOE-Nf-Dad" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="xpG-ZQ-8Dm"/>
+                <constraint firstItem="983-Wk-z59" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="zxu-0C-TuI"/>
+            </constraints>
+            <size key="customSize" width="204" height="202"/>
+            <connections>
+                <outlet property="activityIndicator" destination="983-Wk-z59" id="6rV-bw-jhP"/>
+                <outlet property="imageView" destination="sOE-Nf-Dad" id="aoM-l9-VIr"/>
+            </connections>
+            <point key="canvasLocation" x="111" y="130"/>
+        </collectionViewCell>
+    </objects>
+</document>

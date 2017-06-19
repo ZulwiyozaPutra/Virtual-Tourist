@@ -77,6 +77,11 @@
                                         </view>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="0ZW-AK-MZj" id="q78-WP-dkF"/>
+                                    <outlet property="delegate" destination="0ZW-AK-MZj" id="UfJ-No-ZXF"/>
+                                    <outlet property="prefetchDataSource" destination="0ZW-AK-MZj" id="iAL-68-3WV"/>
+                                </connections>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
