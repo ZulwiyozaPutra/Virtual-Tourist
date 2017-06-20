@@ -75,7 +75,11 @@ class MainViewController: ViewController {
             annotation.title = "\(String(describing: placemark.locality!)), \(placemark.administrativeArea ?? "") \(placemark.postalCode ?? "")"
             annotation.subtitle = placemark.country
             annotation.coordinate = placemark.location!.coordinate
+            self.annotationPoints?.append(annotation)
             self.saveAnnotationPoint(annotation)
+            self.executeOnMain {
+                self.mapView.reloadInputViews()
+            }
         })
     }
     
