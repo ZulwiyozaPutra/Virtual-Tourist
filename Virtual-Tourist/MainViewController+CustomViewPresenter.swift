@@ -11,6 +11,12 @@ import UIKit
 import MapKit
 
 extension MainViewController {
+    func presentPhotosViewController() {
+        let annotation = mapView.selectedAnnotations[0]
+        performSegue(withIdentifier: "Show Photos", sender: nil)
+        mapView.deselectAnnotation(annotation, animated: false)
+    }
+    
     func presentAnnotationDetailView(annotation: MKPointAnnotation) {
         self.annotationDetailView.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: self.view.frame.height)
         self.annotationDetailView.firstLineSubtitle.text = annotation.title

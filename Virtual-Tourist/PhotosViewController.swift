@@ -40,6 +40,11 @@ class PhotosViewController: ViewController {
         if flickrImages == nil {
             self.state(state: .loading)
             FlickrClient.getFlickrImages(location: self.location!) { (error: Error?, flickrImages: [FlickrImage]?) in
+                guard error == nil else {
+                    self.state(state: .normal)
+                    return
+                }
+                
                 self.executeOnMain {
                     self.flickrImages = flickrImages!
                     self.collectionView.reloadData()

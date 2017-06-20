@@ -8,6 +8,7 @@
 
 import MapKit
 import UIKit
+import CoreData
 
 extension MainViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -39,7 +40,10 @@ extension MainViewController: MKMapViewDelegate {
             self.presentAnnotationDetailView(annotation: activeAnnotation!)
         } else {
             self.activeAnnotation = nil
-            mapView.removeAnnotation(view.annotation!)
+            let annotation = view.annotation! as? MKPointAnnotation
+            removeFromCoreData(of: annotation!)
+            mapView.removeAnnotation(annotation!)
+            
         }
     }
     

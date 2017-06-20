@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class MainViewController: ViewController {
+class MainViewController: ViewController, NSFetchedResultsControllerDelegate {
     
     let longPressGestureRecognizer = UILongPressGestureRecognizer()
     
@@ -20,12 +20,49 @@ class MainViewController: ViewController {
     
     var editMode = false
     
-    var pins: [NSManagedObject]? = nil
-    
-    var annotationPoints: [MKPointAnnotation]? = nil
+    var annotationPoints: [AnnotationPoint]? = nil
     
     var activeAnnotation: MKPointAnnotation? = nil
     
+    //Core Data
+    func coreDataStack() -> CoreDataStack {
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        return delegate.stack
+    }
+    
+    //Fetch Results
+    func fetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult> {
+        
+        let stack = coreDataStack()
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AnnotationPoint")
+        fetchRequest.sortDescriptors = []
+        
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: stack.context, sectionNameKeyPath: nil, cacheName: nil)
+    }
+    
+    //Load Saved Pin
+    func preloadSavedAnnotationPoint() -> [AnnotationPoint]? {
+        do {
+            var annotationPoints: [AnnotationPoint] = []
+            let fetchedResultsController = self.fetchedResultsController()
+            try fetchedResultsController.performFetch()
+            
+            let annotationPointsCount = try fetchedResultsController.managedObjectContext.count(for: fetchedResultsController.fetchRequest)
+            
+            print(annotationPointsCount)
+            
+            for index in 0..<annotationPointsCount {
+                annotationPoints.append(fetchedResultsController.object(at: IndexPath(row: index, section: 0)) as! AnnotationPoint)
+            }
+            
+            return annotationPoints
+            
+        } catch {
+            
+            return nil
+        }
+    }
 
     @IBOutlet weak var mapView: MKMapView!
     
@@ -41,16 +78,28 @@ class MainViewController: ViewController {
         mapView.addGestureRecognizer(longPressGestureRecognizer)
         mapView.delegate = self
         
-        if pins == nil {
-            fetchAnnotationPoints {
-                self.annotationPoints = self.convertPinManagedObjectsToPointAnnotations(self.pins!)
-                
-                self.executeOnMain {
-                    self.mapView.addAnnotations(self.annotationPoints!)
-                    self.mapView.reloadInputViews()
-                }
+        
+        let preLoadAnnotationPoints = preloadSavedAnnotationPoint()
+        if preLoadAnnotationPoints != nil {
+            
+            annotationPoints = preLoadAnnotationPoints
+            var points = [MKPointAnnotation]()
+            
+            for annotationPoint in annotationPoints! {
+                let point = MKPointAnnotation()
+                let coordinate = CLLocationCoordinate2DMake(annotationPoint.latitude, annotationPoint.longitude)
+                point.coordinate = coordinate
+                point.title = annotationPoint.title
+                point.subtitle = annotationPoint.subtitle
+                points.append(point)
             }
-            self.mapView.addAnnotations(annotationPoints!)
+            
+            print(points)
+            
+            self.executeOnMain {
+                self.mapView.addAnnotations(points)
+                self.mapView.reloadInputViews()
+            }
         }
     }
     
@@ -72,12 +121,6 @@ class MainViewController: ViewController {
         return instance
     }
     
-    func presentPhotosViewController() {
-        let annotation = mapView.selectedAnnotations[0]
-        performSegue(withIdentifier: "Show Photos", sender: nil)
-        mapView.deselectAnnotation(annotation, animated: false)
-    }
-    
     func getLocation(annotation: MKPointAnnotation, completion: @escaping (_ placemark: CLPlacemark) -> Void) {
         
         let geoCoder = CLGeocoder()
@@ -96,7 +139,6 @@ class MainViewController: ViewController {
                 return
             }
             completion(placemarks![0])
-            
         }
     }
     
@@ -129,8 +171,11 @@ class MainViewController: ViewController {
             annotation.subtitle = placemark.country
             annotation.coordinate = placemark.location!.coordinate
             self.mapView.addAnnotation(annotation)
-            self.annotationPoints?.append(annotation)
-            self.saveAnnotationPoint(annotation)
+            
+            let annotationPoint = AnnotationPoint(index: 0, annotation: annotation, context: self.coreDataStack().context)
+            self.addToCoreData(of: annotation)
+            self.annotationPoints?.append(annotationPoint)
+            
             self.executeOnMain {
                 self.activeAnnotation = annotation
                 self.presentAnnotationDetailView(annotation: self.activeAnnotation!)
@@ -148,7 +193,38 @@ class MainViewController: ViewController {
         backItem.title = "Back"
         navigationItem.backBarButtonItem = backItem
     }
-
+    
+    //Add Core Data
+    
+    func addToCoreData(of point: MKPointAnnotation) {
+        
+        do {
+            let annotationPoint = AnnotationPoint(index: 0, annotation: point, context: coreDataStack().context)
+            try coreDataStack().saveContext()
+            annotationPoints?.append(annotationPoint)
+        } catch {
+            print("Add Core Data Failed")
+        }
+    }
+    
+    //Delete Core Data
+    
+    func removeFromCoreData(of point: MKPointAnnotation) {
+        
+        for annotationPoint in annotationPoints! {
+            
+            if annotationPoint.latitude == point.coordinate.latitude && annotationPoint.longitude == point.coordinate.longitude {
+                do {
+                    coreDataStack().context.delete(annotationPoint)
+                    try coreDataStack().saveContext()
+                } catch {
+                    
+                    print("Remove Core Data Failed")
+                }
+                break
+            }
+        }
+    }
 }
 
 extension MainViewController: UIGestureRecognizerDelegate {
