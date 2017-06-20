@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class MainViewController: ViewController, NSFetchedResultsControllerDelegate {
+class MainViewController: ViewController {
     
     let longPressGestureRecognizer = UILongPressGestureRecognizer()
     
@@ -22,48 +22,12 @@ class MainViewController: ViewController, NSFetchedResultsControllerDelegate {
     
     var annotationPoints: [AnnotationPoint]? = nil
     
-    var activeAnnotation: MKPointAnnotation? = nil
+    var activeAnnotationPoint: AnnotationPoint? = nil
     
-    //Core Data
-    func coreDataStack() -> CoreDataStack {
-        let delegate = UIApplication.shared.delegate as! AppDelegate
-        return delegate.stack
+    @IBAction func unwindToMain(segue: UIStoryboardSegue) {
+        print("unwind!")
     }
     
-    //Fetch Results
-    func fetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult> {
-        
-        let stack = coreDataStack()
-        
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AnnotationPoint")
-        fetchRequest.sortDescriptors = []
-        
-        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: stack.context, sectionNameKeyPath: nil, cacheName: nil)
-    }
-    
-    //Load Saved Pin
-    func preloadSavedAnnotationPoint() -> [AnnotationPoint]? {
-        do {
-            var annotationPoints: [AnnotationPoint] = []
-            let fetchedResultsController = self.fetchedResultsController()
-            try fetchedResultsController.performFetch()
-            
-            let annotationPointsCount = try fetchedResultsController.managedObjectContext.count(for: fetchedResultsController.fetchRequest)
-            
-            print(annotationPointsCount)
-            
-            for index in 0..<annotationPointsCount {
-                annotationPoints.append(fetchedResultsController.object(at: IndexPath(row: index, section: 0)) as! AnnotationPoint)
-            }
-            
-            return annotationPoints
-            
-        } catch {
-            
-            return nil
-        }
-    }
-
     @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
@@ -78,11 +42,11 @@ class MainViewController: ViewController, NSFetchedResultsControllerDelegate {
         mapView.addGestureRecognizer(longPressGestureRecognizer)
         mapView.delegate = self
         
+        let preLoadAnnotationPoints = preloadSavedAnnotationPoints()
         
-        let preLoadAnnotationPoints = preloadSavedAnnotationPoint()
         if preLoadAnnotationPoints != nil {
             
-            annotationPoints = preLoadAnnotationPoints
+            let annotationPoints = preLoadAnnotationPoints
             var points = [MKPointAnnotation]()
             
             for annotationPoint in annotationPoints! {
@@ -94,13 +58,22 @@ class MainViewController: ViewController, NSFetchedResultsControllerDelegate {
                 points.append(point)
             }
             
-            print(points)
-            
             self.executeOnMain {
+                self.annotationPoints = annotationPoints
                 self.mapView.addAnnotations(points)
-                self.mapView.reloadInputViews()
             }
         }
+    }
+    
+    //Fetch Results
+    func fetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult> {
+        
+        let stack = coreDataStack()
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AnnotationPoint")
+        fetchRequest.sortDescriptors = []
+        
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: stack.context, sectionNameKeyPath: nil, cacheName: nil)
     }
     
     func annotationDetailViewInstanceFromNib() -> AnnotationDetailView {
@@ -121,11 +94,9 @@ class MainViewController: ViewController, NSFetchedResultsControllerDelegate {
         return instance
     }
     
-    func getLocation(annotation: MKPointAnnotation, completion: @escaping (_ placemark: CLPlacemark) -> Void) {
+    func getLocation(location: CLLocation, completion: @escaping (_ placemark: CLPlacemark) -> Void) {
         
         let geoCoder = CLGeocoder()
-        
-        let location = CLLocation(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude)
         
         geoCoder.reverseGeocodeLocation(location) { (placemarks: [CLPlacemark]?, error: Error?) in
             guard error == nil else {
@@ -157,74 +128,102 @@ class MainViewController: ViewController, NSFetchedResultsControllerDelegate {
     }
     
     fileprivate func addAnnotationToMap(point: CGPoint) {
-        var annotation = MKPointAnnotation()
+        
         let point = CGPoint(x: point.x, y: point.y)
         let coordinate = mapView.convert(point, toCoordinateFrom: self.view)
         
-        annotation = MKPointAnnotation()
-        annotation.coordinate.latitude = coordinate.latitude
-        annotation.coordinate.longitude = coordinate.longitude
+        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         
-        getLocation(annotation: annotation, completion: { (placemark: CLPlacemark) in
+        getLocation(location: location, completion: { (placemark: CLPlacemark) in
+            
             let annotation = MKPointAnnotation()
             annotation.title = "\(String(describing: placemark.locality!)), \(placemark.administrativeArea ?? "") \(placemark.postalCode ?? "")"
             annotation.subtitle = placemark.country
             annotation.coordinate = placemark.location!.coordinate
-            self.mapView.addAnnotation(annotation)
             
             let annotationPoint = AnnotationPoint(index: 0, annotation: annotation, context: self.coreDataStack().context)
             self.addToCoreData(of: annotation)
-            self.annotationPoints?.append(annotationPoint)
             
             self.executeOnMain {
-                self.activeAnnotation = annotation
-                self.presentAnnotationDetailView(annotation: self.activeAnnotation!)
-                self.mapView.reloadInputViews()
+                self.mapView.addAnnotation(annotation)
+                self.activeAnnotationPoint = annotationPoint
+                self.presentAnnotationPointDetailView()
+                
             }
         })
     }
-
-    // MARK: - Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let photosViewController = segue.destination as? PhotosViewController
-        let annotation = self.activeAnnotation!
-        photosViewController?.location = CLLocation(latitude: (annotation.coordinate.latitude), longitude: (annotation.coordinate.longitude))
-        let backItem = UIBarButtonItem()
-        backItem.title = "Back"
-        navigationItem.backBarButtonItem = backItem
+    
+    
+    
+    //Load Saved Pin
+    
+    
+    func preloadSavedAnnotationPoints() -> [AnnotationPoint]? {
+        do {
+            var annotationPoints: [AnnotationPoint] = []
+            
+            let fetchedResultsController = self.fetchedResultsController()
+            try fetchedResultsController.performFetch()
+            
+            let annotationPointsCount = try fetchedResultsController.managedObjectContext.count(for: fetchedResultsController.fetchRequest)
+            
+            print(annotationPointsCount)
+            
+            for index in 0..<annotationPointsCount {
+                annotationPoints.append(fetchedResultsController.object(at: IndexPath(row: index, section: 0)) as! AnnotationPoint)
+            }
+            return annotationPoints
+            
+        } catch {
+            
+            return nil
+        }
     }
     
     //Add Core Data
     
-    func addToCoreData(of point: MKPointAnnotation) {
-        
+    func addToCoreData(of object: MKPointAnnotation) {
         do {
-            let annotationPoint = AnnotationPoint(index: 0, annotation: point, context: coreDataStack().context)
+            _ = AnnotationPoint(index: 0, annotation: object, context: coreDataStack().context)
             try coreDataStack().saveContext()
-            annotationPoints?.append(annotationPoint)
         } catch {
             print("Add Core Data Failed")
         }
     }
+    
+    
     
     //Delete Core Data
     
     func removeFromCoreData(of point: MKPointAnnotation) {
         
         for annotationPoint in annotationPoints! {
-            
             if annotationPoint.latitude == point.coordinate.latitude && annotationPoint.longitude == point.coordinate.longitude {
                 do {
                     coreDataStack().context.delete(annotationPoint)
                     try coreDataStack().saveContext()
                 } catch {
-                    
                     print("Remove Core Data Failed")
                 }
                 break
             }
         }
     }
+
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let photosViewController = segue.destination as? PhotosViewController
+        let annotationPoint = self.activeAnnotationPoint!
+        
+        photosViewController?.activeAnnotationPoint = annotationPoint
+        dismissAnnotationDetailView()
+        
+        self.activeAnnotationPoint = nil
+        let backItem = UIBarButtonItem()
+        backItem.title = "Back"
+        navigationItem.backBarButtonItem = backItem
+    }
+    
 }
 
 extension MainViewController: UIGestureRecognizerDelegate {

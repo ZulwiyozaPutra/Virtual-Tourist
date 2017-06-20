@@ -33,13 +33,18 @@ extension MainViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if !editMode {
-            let annotation = view.annotation! as? MKPointAnnotation
-            self.annotationDetailView.firstLineSubtitle.text = annotation!.title!
-            self.annotationDetailView.secondLineSubtitle.text = annotation!.subtitle!
-            self.activeAnnotation = annotation
-            self.presentAnnotationDetailView(annotation: activeAnnotation!)
+            let pointAnnotation = view.annotation! as? MKPointAnnotation
+            for annotationPoint in annotationPoints! {
+                if pointAnnotation?.coordinate.latitude == annotationPoint.latitude && pointAnnotation?.coordinate.longitude == annotationPoint.longitude {
+                    
+                    self.activeAnnotationPoint = annotationPoint
+                    print(self.activeAnnotationPoint)
+                }
+            }
+
+            self.presentAnnotationPointDetailView()
         } else {
-            self.activeAnnotation = nil
+            self.activeAnnotationPoint = nil
             let annotation = view.annotation! as? MKPointAnnotation
             removeFromCoreData(of: annotation!)
             mapView.removeAnnotation(annotation!)

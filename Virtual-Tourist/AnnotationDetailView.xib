@@ -53,29 +53,43 @@
                         <constraint firstItem="g8B-me-Ofi" firstAttribute="leading" secondItem="YUk-zD-9HW" secondAttribute="leading" id="yAx-GI-oHa"/>
                     </constraints>
                 </stackView>
-                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5sI-iF-i4f">
-                    <rect key="frame" x="16" y="107.5" width="343" height="40"/>
-                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="6oh-LV-r0m"/>
-                    </constraints>
-                    <state key="normal" title="Show Photos">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="XuJ-v3-yMz">
+                    <rect key="frame" x="16" y="108" width="343" height="40"/>
+                    <subviews>
+                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ji-ez-oxH">
+                            <rect key="frame" x="0.0" y="0.0" width="167.5" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="jbs-X9-0Sz"/>
+                            </constraints>
+                            <state key="normal" title="Remove Location">
+                                <color key="titleColor" red="0.25011119250000002" green="0.50406491760000005" blue="0.99853926900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5sI-iF-i4f">
+                            <rect key="frame" x="175.5" y="0.0" width="167.5" height="40"/>
+                            <color key="backgroundColor" red="0.25011119250000002" green="0.50406491760000005" blue="0.99853926900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="6oh-LV-r0m"/>
+                            </constraints>
+                            <state key="normal" title="Show Photos">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                    </subviews>
+                </stackView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="Xth-2P-At8" secondAttribute="trailing" constant="16" id="2Yo-dg-829"/>
                 <constraint firstItem="YUk-zD-9HW" firstAttribute="top" secondItem="2Rl-ec-rj8" secondAttribute="bottom" constant="16" id="3IA-VD-NT4"/>
-                <constraint firstItem="5sI-iF-i4f" firstAttribute="leading" secondItem="gHB-e5-g9i" secondAttribute="leading" constant="16" id="6cl-bH-Rzw"/>
+                <constraint firstAttribute="trailing" secondItem="XuJ-v3-yMz" secondAttribute="trailing" constant="16" id="D5J-Ze-JGT"/>
                 <constraint firstItem="Xth-2P-At8" firstAttribute="top" secondItem="gHB-e5-g9i" secondAttribute="top" constant="16" id="JKn-3n-Xwx"/>
                 <constraint firstItem="2Rl-ec-rj8" firstAttribute="leading" secondItem="gHB-e5-g9i" secondAttribute="leading" constant="16" id="JuI-Mx-2fS"/>
-                <constraint firstAttribute="trailing" secondItem="5sI-iF-i4f" secondAttribute="trailing" constant="16" id="MBn-8j-8G8"/>
                 <constraint firstAttribute="trailing" secondItem="YUk-zD-9HW" secondAttribute="trailing" constant="16" id="bkm-iI-IkU"/>
                 <constraint firstItem="2Rl-ec-rj8" firstAttribute="top" secondItem="gHB-e5-g9i" secondAttribute="top" constant="16" id="dAo-hc-zvW"/>
+                <constraint firstItem="XuJ-v3-yMz" firstAttribute="leading" secondItem="gHB-e5-g9i" secondAttribute="leading" constant="16" id="e66-RY-d8d"/>
                 <constraint firstItem="YUk-zD-9HW" firstAttribute="leading" secondItem="gHB-e5-g9i" secondAttribute="leading" constant="16" id="ecU-eG-ub7"/>
-                <constraint firstItem="5sI-iF-i4f" firstAttribute="top" secondItem="YUk-zD-9HW" secondAttribute="bottom" constant="16" id="zSz-Kc-igv"/>
+                <constraint firstItem="XuJ-v3-yMz" firstAttribute="top" secondItem="YUk-zD-9HW" secondAttribute="bottom" constant="16" id="wRW-fZ-X1o"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
@@ -84,6 +98,7 @@
             <connections>
                 <outlet property="dismissButton" destination="Xth-2P-At8" id="19e-BR-CAT"/>
                 <outlet property="firstLineSubtitle" destination="ztO-zv-4JI" id="TcE-Xd-ImX"/>
+                <outlet property="removeLocationButton" destination="5Ji-ez-oxH" id="5Vm-Qp-Ws7"/>
                 <outlet property="secondLineSubtitle" destination="g8B-me-Ofi" id="z3C-dI-cwv"/>
                 <outlet property="showPhotosButton" destination="5sI-iF-i4f" id="5PA-if-LSc"/>
                 <outlet property="titleLabel" destination="2Rl-ec-rj8" id="dlC-xQ-U3N"/>

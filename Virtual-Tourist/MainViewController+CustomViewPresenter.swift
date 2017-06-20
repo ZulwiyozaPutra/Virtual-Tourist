@@ -17,11 +17,13 @@ extension MainViewController {
         mapView.deselectAnnotation(annotation, animated: false)
     }
     
-    func presentAnnotationDetailView(annotation: MKPointAnnotation) {
+    func presentAnnotationPointDetailView() {
+        
         self.annotationDetailView.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: self.view.frame.height)
-        self.annotationDetailView.firstLineSubtitle.text = annotation.title
-        self.annotationDetailView.secondLineSubtitle.text = annotation.subtitle
+        self.annotationDetailView.firstLineSubtitle.text = activeAnnotationPoint!.title
+        self.annotationDetailView.secondLineSubtitle.text = activeAnnotationPoint!.subtitle
         self.view.addSubview(self.annotationDetailView)
+        
         UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseIn, animations: {
             self.annotationDetailView.frame.origin.y -= 168
         }, completion: nil)
@@ -29,10 +31,8 @@ extension MainViewController {
     
     func dismissAnnotationDetailView() {
         UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseIn, animations: {
-            self.activeAnnotation = nil
             self.annotationDetailView.frame.origin.y += 168
             self.executeOnMain(withDelay: 0.1, {
-                self.activeAnnotation = nil
                 self.annotationDetailView.removeFromSuperview()
             })
         }, completion: nil)

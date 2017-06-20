@@ -16,33 +16,49 @@ class CollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        self.activityIndicator.startAnimating()
     }
     
     //Get Photos
     
-    func initWithPhoto(_ flickrImage: FlickrImage) {
+    func initWithPhoto(_ photo: Photo) {
         
-        downloadImage(flickrImage)
+        if photo.imageData == nil {
+            downloadImage(photo)
+        } else {
+            self.imageView.image = UIImage(data: photo.imageData! as Data)
+            self.activityIndicator.stopAnimating()
+        }
+        
     }
     
     //Download Images
     
-    private func downloadImage(_ flickrImage: FlickrImage) {
-        
-        let url = URL(string: flickrImage.imageURL)
-        
-        
-        URLSession.shared.dataTask(with: url!) { (data, response, error) in
+    private func downloadImage(_ photo: Photo) -> Void {
+        URLSession.shared.dataTask(with: URL(string: photo.imageURL!)!) { (data, response, error) in
             if error == nil {
+                
                 DispatchQueue.main.async {
+                    
                     self.imageView.image = UIImage(data: data! as Data)
                     self.activityIndicator.stopAnimating()
+                    self.saveImageDataToCoreData(photo: photo, imageData: data! as NSData)
                 }
             }
-            
-        }
-        .resume()
+        }.resume()
     }
+    
+    //Save Images
+    func saveImageDataToCoreData(photo: Photo, imageData: NSData) {
+        do {
+            photo.imageData = imageData
+            let delegate = UIApplication.shared.delegate as! AppDelegate
+            let stack = delegate.stack
+            try stack.saveContext()
+        } catch {
+            print("Saving Photo imageData Failed")
+        }
+    }
+
 
 }

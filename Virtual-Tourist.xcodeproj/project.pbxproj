@@ -194,9 +194,9 @@
 				6E0B39371EF8402C00BD1EEF /* MainViewController+MapViewDelegate.swift */,
 				6E1A37A71EF8B69F00CF473F /* MainViewController+CoreData.swift */,
 				6E31C4E81EF81C9200D07327 /* AnnotationDetailView.swift */,
-				6E0B393B1EF8417C00BD1EEF /* CollectionViewCell.swift */,
 				6E31C4E41EF8001100D07327 /* PhotosViewController.swift */,
 				6E0B39391EF8407E00BD1EEF /* PhotosViewController+CollectionViewDataSource.swift */,
+				6E0B393B1EF8417C00BD1EEF /* CollectionViewCell.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
