@@ -15,6 +15,8 @@ class MainViewController: ViewController {
     
     var annotationDetailView = AnnotationDetailView()
     
+    var editingModeDescriptionView = UIView()
+    
     var editMode = false
     
     var annotations: [MKPointAnnotation]? = nil
@@ -31,7 +33,11 @@ class MainViewController: ViewController {
         super.viewDidLoad()
         title = "Virtual Tourist"
         self.navigationItem.rightBarButtonItem = self.editButtonItem
-        self.annotationDetailView = instanceFromNib()
+        
+        self.annotationDetailView = annotationDetailViewInstanceFromNib()
+        
+        self.editingModeDescriptionView = editingModeDescriptionViewInstanceFromNib()
+        
         
         longPressGestureRecognizer.delegate = self
         mapView.addGestureRecognizer(longPressGestureRecognizer)
@@ -39,34 +45,27 @@ class MainViewController: ViewController {
         mapView.delegate = self
     }
     
-    func instanceFromNib() -> AnnotationDetailView {
+    func annotationDetailViewInstanceFromNib() -> AnnotationDetailView {
         let instance = UINib(nibName: "AnnotationDetailView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! AnnotationDetailView
         
         let path = UIBezierPath(roundedRect:instance.bounds, byRoundingCorners:[.topRight, .topLeft], cornerRadii: CGSize(width: 10, height: 10))
         let maskLayer = CAShapeLayer()
         
         maskLayer.path = path.cgPath
-        
         instance.layer.mask = maskLayer
         instance.dismissButton.addTarget(self, action: #selector(dismissAnnotationDetailView), for: .touchUpInside)
         instance.showPhotosButton.addTarget(self, action: #selector(presentPhotosViewController), for: .touchUpInside)
         return instance
     }
     
+    func editingModeDescriptionViewInstanceFromNib() -> UIView {
+        let instance = UINib(nibName: "EditingModeDescriptionView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! UIView
+        return instance
+    }
+    
     func presentPhotosViewController() {
         performSegue(withIdentifier: "Show Photos", sender: nil)
         mapView.deselectAnnotation(annotation, animated: false)
-    }
-    
-    func dismissAnnotationDetailView() {
-        UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseIn, animations: {
-            self.annotationDetailView.frame.origin.y += 168
-            self.executeOnMain(withDelay: 0.2, {
-                self.annotationDetailView.removeFromSuperview()
-            })
-        }, completion: nil)
-        
-        self.location = nil
     }
     
     func getLocation(completion: @escaping (_ placemark: CLPlacemark) -> Void) {
@@ -96,7 +95,17 @@ class MainViewController: ViewController {
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
+        
         editMode = editing
+        if editing {
+            presentEditModeDescriptionView()
+            if self.annotationDetailView.frame.origin.y != self.view.frame.height {
+                dismissAnnotationDetailView()
+            }
+        } else {
+            dismissEditModeDescriptionView()
+        }
+        
     }
     
     fileprivate func addAnnotationToMap(point: CGPoint) {

@@ -37,12 +37,18 @@ class PhotosViewController: ViewController {
         
         self.collectionView.register(UINib(nibName: "CollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Photo's Cell")
         
-        FlickrClient.getFlickrImages(location: self.location!) { (error: Error?, flickrImages: [FlickrImage]?) in
-            self.executeOnMain {
-                self.flickrImages = flickrImages!
-                self.collectionView.reloadData()
+        if flickrImages == nil {
+            self.state(state: .loading)
+            FlickrClient.getFlickrImages(location: self.location!) { (error: Error?, flickrImages: [FlickrImage]?) in
+                self.executeOnMain {
+                    self.flickrImages = flickrImages!
+                    self.collectionView.reloadData()
+                    self.state(state: .normal)
+                }
             }
         }
+        
+        
         
     }
 

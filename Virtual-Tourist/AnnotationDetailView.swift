@@ -25,5 +25,4 @@ class AnnotationDetailView: UIView {
         showPhotosButton.layer.cornerRadius = 10
     }
     
-    
 }
