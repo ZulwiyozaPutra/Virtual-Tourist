@@ -93,6 +93,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="collectionFlowLayout" destination="E01-Ov-JO2" id="mz7-vx-Lk0"/>
                         <outlet property="collectionView" destination="7D8-69-NVf" id="S24-g1-gDN"/>
                     </connections>
                 </viewController>

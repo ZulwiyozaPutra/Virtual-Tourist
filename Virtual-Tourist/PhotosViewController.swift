@@ -13,6 +13,8 @@ class PhotosViewController: ViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
     
+    @IBOutlet weak var collectionFlowLayout: UICollectionViewFlowLayout!
+    
     var flickrImages: [FlickrImage]? = nil
     
     var location: CLLocation? = nil
@@ -20,11 +22,26 @@ class PhotosViewController: ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.navigationItem.leftBarButtonItem?.title = "Back"
+        
+        collectionView.dataSource = self
+        
+        //Flow Layout
+        
+        let space: CGFloat = 3.0
+        let dimension = (self.view.frame.size.width - (2 * space)) / 3.0
+        
+        collectionFlowLayout.minimumInteritemSpacing = 3.0
+        collectionFlowLayout.minimumLineSpacing = 3.0
+        collectionFlowLayout.itemSize = CGSize(width: dimension, height: dimension)
+        
         self.collectionView.register(UINib(nibName: "CollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Photo's Cell")
         
         FlickrClient.getFlickrImages(location: self.location!) { (error: Error?, flickrImages: [FlickrImage]?) in
-            self.flickrImages = flickrImages!
-            self.collectionView.reloadData()
+            self.executeOnMain {
+                self.flickrImages = flickrImages!
+                self.collectionView.reloadData()
+            }
         }
         
     }

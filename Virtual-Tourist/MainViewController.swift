@@ -22,6 +22,8 @@ class MainViewController: ViewController {
     var annotation: MKPointAnnotation? = nil
     
     var location: CLLocation? = nil
+    
+    
 
     @IBOutlet weak var mapView: MKMapView!
     
@@ -57,7 +59,13 @@ class MainViewController: ViewController {
     }
     
     func dismissAnnotationDetailView() {
-        annotationDetailView.removeFromSuperview()
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseIn, animations: {
+            self.annotationDetailView.frame.origin.y += 168
+            self.executeOnMain(withDelay: 0.2, {
+                self.annotationDetailView.removeFromSuperview()
+            })
+        }, completion: nil)
+        
         self.location = nil
     }
     
@@ -102,6 +110,9 @@ class MainViewController: ViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let photosViewController = segue.destination as? PhotosViewController
         photosViewController?.location = self.location
+        let backItem = UIBarButtonItem()
+        backItem.title = "Back"
+        navigationItem.backBarButtonItem = backItem
         
     }
 
