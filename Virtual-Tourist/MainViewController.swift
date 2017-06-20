@@ -8,10 +8,11 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class MainViewController: ViewController {
     
-    let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: nil)
+    let longPressGestureRecognizer = UILongPressGestureRecognizer()
     
     var annotationDetailView = AnnotationDetailView()
     
@@ -19,30 +20,63 @@ class MainViewController: ViewController {
     
     var editMode = false
     
-    var annotations: [MKPointAnnotation]? = nil
+    var pins: [NSManagedObject]? = nil
+    
+    var annotationPoints: [MKPointAnnotation]? = nil
+    
+    var pin: NSManagedObject? = nil
     
     var annotation: MKPointAnnotation? = nil
     
     var location: CLLocation? = nil
-    
     
 
     @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         title = "Virtual Tourist"
+        
         self.navigationItem.rightBarButtonItem = self.editButtonItem
-        
         self.annotationDetailView = annotationDetailViewInstanceFromNib()
-        
         self.editingModeDescriptionView = editingModeDescriptionViewInstanceFromNib()
         
         
         longPressGestureRecognizer.delegate = self
+        longPressGestureRecognizer.addTarget(self, action: #selector(saveAnnotation))
         mapView.addGestureRecognizer(longPressGestureRecognizer)
-        
         mapView.delegate = self
+        
+        if pins == nil {
+            fetchAnnotationPoints {
+                self.annotationPoints = self.convertPinManagedObjectsToPointAnnotations(self.pins!)
+                
+                self.executeOnMain {
+                    self.mapView.addAnnotations(self.annotationPoints!)
+                    self.mapView.reloadInputViews()
+                }
+            }
+            self.mapView.addAnnotations(annotationPoints!)
+        }
+    }
+    
+    func saveAnnotation() {
+        let gestureTouchLocation = longPressGestureRecognizer.location(in: mapView)
+        let point = CGPoint(x: gestureTouchLocation.x, y: gestureTouchLocation.y)
+        let coordinate = mapView.convert(point, toCoordinateFrom: self.view)
+        
+        self.annotation = MKPointAnnotation()
+        self.annotation!.coordinate.latitude = coordinate.latitude
+        self.annotation!.coordinate.longitude = coordinate.longitude
+        
+        getLocation(completion: { (placemark: CLPlacemark) in
+            let annotation = MKPointAnnotation()
+            annotation.title = "\(String(describing: placemark.locality!)), \(placemark.administrativeArea ?? "") \(placemark.postalCode ?? "")"
+            annotation.subtitle = placemark.country
+            annotation.coordinate = placemark.location!.coordinate
+            self.saveAnnotationPoint(annotation)
+        })
     }
     
     func annotationDetailViewInstanceFromNib() -> AnnotationDetailView {
@@ -75,9 +109,11 @@ class MainViewController: ViewController {
         self.state(state: .loading)
         
         let location = CLLocation(latitude: annotation!.coordinate.latitude, longitude: annotation!.coordinate.longitude)
+        
         geoCoder.reverseGeocodeLocation(location) { (placemarks: [CLPlacemark]?, error: Error?) in
             guard error == nil else {
                 self.presentErrorAlertController("Couldn't Find Location", alertMessage: "\(error.debugDescription), Please Try Again")
+                self.state(state: .normal)
                 return
             }
             
@@ -87,7 +123,6 @@ class MainViewController: ViewController {
             }
             
             self.state(state: .normal)
-            
             completion(placemarks![0])
             
         }
@@ -95,7 +130,6 @@ class MainViewController: ViewController {
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-        
         editMode = editing
         if editing {
             presentEditModeDescriptionView()
@@ -122,7 +156,6 @@ class MainViewController: ViewController {
         let backItem = UIBarButtonItem()
         backItem.title = "Back"
         navigationItem.backBarButtonItem = backItem
-        
     }
 
 }

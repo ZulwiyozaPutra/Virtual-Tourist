@@ -55,7 +55,7 @@
                 </stackView>
                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5sI-iF-i4f">
                     <rect key="frame" x="16" y="107.5" width="343" height="40"/>
-                    <color key="backgroundColor" red="0.25011119250000002" green="0.50406491760000005" blue="0.99853926900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="6oh-LV-r0m"/>
                     </constraints>

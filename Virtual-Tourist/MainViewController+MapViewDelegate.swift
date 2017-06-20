@@ -31,15 +31,11 @@ extension MainViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        
         if !editMode {
             self.annotation = view.annotation! as? MKPointAnnotation
-            getLocation(completion: { (placemark: CLPlacemark) in
-                self.annotationDetailView.firstLineSubtitle.text = "\(String(describing: placemark.locality!)), \(placemark.administrativeArea ?? "") \(placemark.postalCode ?? "")"
-                self.annotationDetailView.secondLineSubtitle.text = placemark.country
-                self.location = placemark.location
-                self.presentAnnotationDetailView()
-            })
+            self.annotationDetailView.firstLineSubtitle.text = self.annotation?.title
+            self.annotationDetailView.secondLineSubtitle.text = self.annotation?.subtitle
+            self.presentAnnotationDetailView()
         } else {
             mapView.removeAnnotation(view.annotation!)
         }
