@@ -61,7 +61,6 @@ class MainViewController: ViewController {
     
     //Fetch Results
     func fetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult> {
-        
         let stack = coreDataStack()
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Point")
         fetchRequest.sortDescriptors = []
@@ -88,8 +87,6 @@ class MainViewController: ViewController {
     
     func annotationDetailViewInstanceFromNib() -> AnnotationDetailView {
         let instance = UINib(nibName: "AnnotationDetailView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! AnnotationDetailView
-        
-        
         instance.dismissButton.addTarget(self, action: #selector(dismissAnnotationDetailView), for: .touchUpInside)
         instance.showPhotosButton.addTarget(self, action: #selector(presentPhotosViewController), for: .touchUpInside)
         instance.removeLocationButton.addTarget(self, action: #selector(removeMapPointAnnotation
@@ -110,6 +107,7 @@ class MainViewController: ViewController {
     
     func getLocation(location: CLLocation, completion: @escaping (_ placemark: CLPlacemark) -> Void) {
         let geoCoder = CLGeocoder()
+        
         geoCoder.reverseGeocodeLocation(location) { (placemarks: [CLPlacemark]?, error: Error?) in
             guard error == nil else {
                 self.presentErrorAlertController("Couldn't Find Location", alertMessage: "\(error.debugDescription), Please Try Again")
@@ -172,6 +170,7 @@ class MainViewController: ViewController {
 
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         let photosViewController = segue.destination as? PhotosViewController
         var pointToPresent = Point()
         
@@ -197,6 +196,11 @@ class MainViewController: ViewController {
 
 extension MainViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        guard isConnectedToNetwork() == true else {
+            presentErrorAlertController("Error", alertMessage: "Plese connect to the internet and try again")
+            return false
+        }
         
         let gestureTouchPoint = gestureRecognizer.location(in: mapView)
         let point = CGPoint(x: gestureTouchPoint.x, y: gestureTouchPoint.y)

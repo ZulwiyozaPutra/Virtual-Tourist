@@ -62,7 +62,6 @@ class PhotosViewController: ViewController {
         
         
         setNoDataLabel()
-        
         //Fetch Photos
         let savedPhotos = preloadSavedPhotos()
         if savedPhotos != nil && savedPhotos?.count != 0 {
@@ -132,6 +131,11 @@ class PhotosViewController: ViewController {
     }
     
     func showNewPhotos() {
+        
+        guard isConnectedToNetwork() == true else {
+            presentErrorAlertController("Error", alertMessage: "Plese connect to the internet and try again")
+            return
+        }
         
         removeFromCoreData(photos: photos)
         photos.removeAll()
