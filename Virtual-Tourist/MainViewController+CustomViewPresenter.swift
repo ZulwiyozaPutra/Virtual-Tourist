@@ -24,7 +24,6 @@ extension MainViewController {
     }
     
     func presentPointDetailView() {
-        
         self.annotationDetailView.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: self.view.frame.height)
         self.annotationDetailView.firstLineSubtitle.text = activeMapPointAnnotation!.title
         self.annotationDetailView.secondLineSubtitle.text = activeMapPointAnnotation!.subtitle

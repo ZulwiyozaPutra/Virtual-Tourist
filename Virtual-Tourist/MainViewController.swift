@@ -137,9 +137,9 @@ class MainViewController: ViewController {
                 dismissAnnotationDetailView()
             }
         } else {
+            
             dismissEditModeDescriptionView()
         }
-        
     }
     
     
