@@ -31,8 +31,8 @@ class AnnotationDetailView: UIView {
         showPhotosButton.layer.cornerRadius = 5
         removeLocationButton.layer.cornerRadius = 5
         removeLocationButton.layer.borderWidth = 1
-        let blue = UIColor(red: 64/255, green: 129/255, blue: 255/255, alpha: 1.0)
-        removeLocationButton.layer.borderColor = blue.cgColor
+        let red = UIColor(red: 255/255, green: 59/255, blue: 48/255, alpha: 1.0)
+        removeLocationButton.layer.borderColor = red.cgColor
     }
     
 }
