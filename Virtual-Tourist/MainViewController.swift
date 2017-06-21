@@ -231,6 +231,8 @@ extension MainViewController: UIGestureRecognizerDelegate {
             }
             
             self.executeOnMain {
+                let generator = UIImpactFeedbackGenerator(style: .heavy)
+                generator.impactOccurred()
                 self.mapView.addAnnotation(mapPointAnnotation)
                 self.presentPointDetailView()
             }
