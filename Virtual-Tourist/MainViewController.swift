@@ -89,11 +89,7 @@ class MainViewController: ViewController {
     func annotationDetailViewInstanceFromNib() -> AnnotationDetailView {
         let instance = UINib(nibName: "AnnotationDetailView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! AnnotationDetailView
         
-        let path = UIBezierPath(roundedRect:instance.bounds, byRoundingCorners:[.topRight, .topLeft], cornerRadii: CGSize(width: 10, height: 10))
-        let maskLayer = CAShapeLayer()
         
-        maskLayer.path = path.cgPath
-        instance.layer.mask = maskLayer
         instance.dismissButton.addTarget(self, action: #selector(dismissAnnotationDetailView), for: .touchUpInside)
         instance.showPhotosButton.addTarget(self, action: #selector(presentPhotosViewController), for: .touchUpInside)
         instance.removeLocationButton.addTarget(self, action: #selector(removeMapPointAnnotation

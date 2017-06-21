@@ -59,7 +59,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="7D8-69-NVf">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="195" width="375" height="472"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="E01-Ov-JO2">
                                     <size key="itemSize" width="50" height="50"/>
@@ -83,11 +83,20 @@
                                     <outlet property="prefetchDataSource" destination="0ZW-AK-MZj" id="iAL-68-3WV"/>
                                 </connections>
                             </collectionView>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="jA2-z6-01M">
+                                <rect key="frame" x="0.0" y="64" width="375" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="5gN-f8-kCx"/>
+                                </constraints>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="7D8-69-NVf" firstAttribute="leading" secondItem="2fI-jN-ejs" secondAttribute="leading" id="6Ls-ty-cbJ"/>
-                            <constraint firstItem="7D8-69-NVf" firstAttribute="top" secondItem="2fI-jN-ejs" secondAttribute="top" id="Jfl-ns-kqH"/>
+                            <constraint firstItem="jA2-z6-01M" firstAttribute="leading" secondItem="2fI-jN-ejs" secondAttribute="leading" id="AS5-wi-g4U"/>
+                            <constraint firstAttribute="trailing" secondItem="jA2-z6-01M" secondAttribute="trailing" id="Icd-ui-b39"/>
+                            <constraint firstItem="7D8-69-NVf" firstAttribute="top" secondItem="jA2-z6-01M" secondAttribute="bottom" constant="3" id="eiA-dD-kaq"/>
+                            <constraint firstItem="jA2-z6-01M" firstAttribute="top" secondItem="C01-kh-WVt" secondAttribute="bottom" id="kOa-w1-IK8"/>
                             <constraint firstItem="aQ7-pP-0qw" firstAttribute="top" secondItem="7D8-69-NVf" secondAttribute="bottom" id="nf4-GC-75s"/>
                             <constraint firstAttribute="trailing" secondItem="7D8-69-NVf" secondAttribute="trailing" id="sB0-cQ-RIu"/>
                         </constraints>
@@ -99,7 +108,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I21-8t-xeG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2100" y="-645"/>
+            <point key="canvasLocation" x="2100" y="-645.42728635682158"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="UNb-EU-Jsd">

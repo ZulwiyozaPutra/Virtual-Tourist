@@ -28,6 +28,8 @@ class PhotosViewController: ViewController {
     
     var pointAnnotation: MKPointAnnotation!
     
+    var selectedIndexCells = [Int]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -177,9 +179,9 @@ class PhotosViewController: ViewController {
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         if editing {
-            presentRefresherButton()
+            presentRefresherView()
         } else {
-            dismissRefresherButton()
+            dismissRefresherView()
         }
     }
 

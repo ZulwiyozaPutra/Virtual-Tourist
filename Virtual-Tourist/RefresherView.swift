@@ -12,9 +12,14 @@ class RefresherView: UIView {
 
     @IBOutlet weak var refresherButton: UIButton!
     
+    @IBOutlet weak var selectAllButton: UIButton!
+    
+    @IBOutlet weak var deselectAllButton: UIButton!
+    
+    @IBOutlet weak var deleteAllButton: UIButton!
+    
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        self.backgroundColor = UIColor.clear
         refresherButton.layer.cornerRadius = 5
     }
 

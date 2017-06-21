@@ -12,11 +12,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="dsY-Dt-mZT" customClass="RefresherView" customModule="Virtual_Tourist" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="96"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N8S-bM-6a3">
-                    <rect key="frame" x="16" y="72" width="343" height="40"/>
+                    <rect key="frame" x="16" y="40" width="343" height="40"/>
                     <color key="backgroundColor" red="0.25011119250000002" green="0.50406491760000005" blue="0.99853926900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="KuG-27-npd"/>
@@ -26,14 +26,21 @@
                     </state>
                 </button>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="D7T-qp-EBO">
-                    <rect key="frame" x="16" y="16" width="343" height="40"/>
+                    <rect key="frame" x="16" y="16" width="343" height="8"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ICc-n7-wpq">
-                            <rect key="frame" x="0.0" y="0.0" width="65" height="40"/>
+                            <rect key="frame" x="0.0" y="0.0" width="61" height="8"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <state key="normal" title="Select All"/>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lrb-0u-CUf">
+                            <rect key="frame" x="138" y="0.0" width="77" height="8"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <state key="normal" title="Deselect All"/>
+                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mGK-0d-ouU">
-                            <rect key="frame" x="298" y="0.0" width="45" height="40"/>
+                            <rect key="frame" x="301" y="0.0" width="42" height="8"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <state key="normal" title="Delete">
                                 <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
@@ -56,9 +63,12 @@
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="deleteAllButton" destination="mGK-0d-ouU" id="DnG-8C-yGY"/>
+                <outlet property="deselectAllButton" destination="Lrb-0u-CUf" id="hNB-iW-FAi"/>
                 <outlet property="refresherButton" destination="N8S-bM-6a3" id="tzl-VA-Mec"/>
+                <outlet property="selectAllButton" destination="ICc-n7-wpq" id="Y7m-zY-m1H"/>
             </connections>
-            <point key="canvasLocation" x="46.5" y="371"/>
+            <point key="canvasLocation" x="46.5" y="388.5"/>
         </view>
     </objects>
 </document>

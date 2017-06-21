@@ -40,6 +40,7 @@
 		6EA361131EFA85A00063AD51 /* RefresherView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EA361121EFA85A00063AD51 /* RefresherView.xib */; };
 		6EA361151EFA86850063AD51 /* RefresherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA361141EFA86850063AD51 /* RefresherView.swift */; };
 		6EA361171EFA87F70063AD51 /* PhotosViewController+CustomViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA361161EFA87F70063AD51 /* PhotosViewController+CustomViewPresenter.swift */; };
+		6EA361191EFA927A0063AD51 /* PhotosViewController+CollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA361181EFA927A0063AD51 /* PhotosViewController+CollectionViewDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +100,7 @@
 		6EA361121EFA85A00063AD51 /* RefresherView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RefresherView.xib; sourceTree = "<group>"; };
 		6EA361141EFA86850063AD51 /* RefresherView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefresherView.swift; sourceTree = "<group>"; };
 		6EA361161EFA87F70063AD51 /* PhotosViewController+CustomViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PhotosViewController+CustomViewPresenter.swift"; sourceTree = "<group>"; };
+		6EA361181EFA927A0063AD51 /* PhotosViewController+CollectionViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PhotosViewController+CollectionViewDelegate.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +203,7 @@
 				6E0B39371EF8402C00BD1EEF /* MainViewController+MapViewDelegate.swift */,
 				6E31C4E41EF8001100D07327 /* PhotosViewController.swift */,
 				6EA361161EFA87F70063AD51 /* PhotosViewController+CustomViewPresenter.swift */,
+				6EA361181EFA927A0063AD51 /* PhotosViewController+CollectionViewDelegate.swift */,
 				6E0B39391EF8407E00BD1EEF /* PhotosViewController+CollectionViewDataSource.swift */,
 			);
 			name = "View Controller";
@@ -380,6 +383,7 @@
 				6EA361101EFA45220063AD51 /* Point+CoreDataClass.swift in Sources */,
 				6E1A37A61EF8B30600CF473F /* MainViewController+CustomViewPresenter.swift in Sources */,
 				6EA361151EFA86850063AD51 /* RefresherView.swift in Sources */,
+				6EA361191EFA927A0063AD51 /* PhotosViewController+CollectionViewDelegate.swift in Sources */,
 				6EA361091EFA44560063AD51 /* Virtual-Tourist.xcdatamodeld in Sources */,
 				6EA3610F1EFA45220063AD51 /* Photo+CoreDataProperties.swift in Sources */,
 				6EA361111EFA45220063AD51 /* Point+CoreDataProperties.swift in Sources */,
