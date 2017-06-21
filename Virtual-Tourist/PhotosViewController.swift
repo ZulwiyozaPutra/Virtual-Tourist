@@ -12,6 +12,8 @@ import CoreData
 
 class PhotosViewController: ViewController {
 
+    @IBOutlet weak var mapView: MKMapView!
+    
     @IBOutlet weak var collectionView: UICollectionView!
     
     @IBOutlet weak var collectionFlowLayout: UICollectionViewFlowLayout!
@@ -26,7 +28,7 @@ class PhotosViewController: ViewController {
     
     var activeMapPointAnnotation: MKPointAnnotation!
     
-    var pointAnnotation: MKPointAnnotation!
+    var mapPointAnnotation: MKPointAnnotation!
     
     var selectedIndexCells = [Int]()
     
@@ -35,6 +37,7 @@ class PhotosViewController: ViewController {
 
         self.navigationController?.navigationItem.leftBarButtonItem?.title = "Back"
         self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.setupPointAnnotation()
         
         self.refresherView = refresherViewInstanceFromNib()
 
@@ -86,6 +89,15 @@ class PhotosViewController: ViewController {
             parent?.activeMapPointAnnotation = activeMapPointAnnotation
             parent?.presentPointDetailView()
         }
+    }
+    
+    //Add Annotation
+    func setupPointAnnotation() {
+        let annotation = MKPointAnnotation()
+        let coordinate = CLLocationCoordinate2D(latitude: activePoint.latitude, longitude: activePoint.longitude)
+        annotation.coordinate = coordinate
+        mapView.addAnnotation(annotation)
+        mapView.showAnnotations([annotation], animated: true)
     }
     
     func refresherViewInstanceFromNib() -> RefresherView {
