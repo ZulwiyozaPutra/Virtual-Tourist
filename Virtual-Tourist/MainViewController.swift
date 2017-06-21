@@ -170,16 +170,23 @@ class MainViewController: ViewController {
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let photosViewController = segue.destination as? PhotosViewController
-        print(points)
-        print(activeMapPointAnnotation?.coordinate)
+        var pointToPresent = Point()
+        
         for point in points! {
-            if activeMapPointAnnotation!.coordinate.latitude == point.latitude && activeMapPointAnnotation!.coordinate.longitude == point.longitude {
-                photosViewController?.activePoint = point
-                photosViewController?.activeMapPointAnnotation = activeMapPointAnnotation
-                dismissAnnotationDetailView()
-                self.activeMapPointAnnotation = nil
+            
+            
+            
+            let isLatitudeMatch = activeMapPointAnnotation!.coordinate.latitude == point.latitude
+            let isLongitudeMatch = activeMapPointAnnotation!.coordinate.longitude == point.longitude
+            
+            if isLatitudeMatch && isLongitudeMatch {
+                pointToPresent = point
+                break
             }
         }
+        
+        photosViewController?.activePoint = pointToPresent
+        photosViewController?.activeMapPointAnnotation = activeMapPointAnnotation
         
         let backItem = UIBarButtonItem()
         backItem.title = "Back"
@@ -199,21 +206,29 @@ extension MainViewController: UIGestureRecognizerDelegate {
         getLocation(location: location, completion: { (placemark: CLPlacemark) in
             
             let mapPointAnnotation = MKPointAnnotation()
-            mapPointAnnotation.title = "\(String(describing: placemark.locality!)), \(placemark.administrativeArea ?? "") \(placemark.postalCode ?? "")"
-            mapPointAnnotation.subtitle = placemark.country
+            let city = placemark.subAdministrativeArea ?? placemark.locality ?? "Unknown City"
+            let state = placemark.administrativeArea ?? "Unknown State"
+            let postalCode = placemark.postalCode ?? "Unknown Postal Code"
+            let country = placemark.country ?? placemark.ocean ?? "Unknown Region"
+            mapPointAnnotation.title = "\(city), \(state) \(postalCode)"
+            mapPointAnnotation.subtitle = country
             mapPointAnnotation.coordinate = placemark.location!.coordinate
             self.addToCoreData(of: mapPointAnnotation)
             
             for point in self.points! {
-                if point.latitude == mapPointAnnotation.coordinate.latitude && point.longitude == mapPointAnnotation.coordinate.longitude {
+                
+                let isLatitudeMatch = point.latitude == mapPointAnnotation.coordinate.latitude
+                let isLongitudeMatch = point.longitude == mapPointAnnotation.coordinate.longitude
+                
+                if isLatitudeMatch && isLongitudeMatch  {
                     self.activeMapPointAnnotation = mapPointAnnotation
+                    print("point is found, the point is \(point)")
                 }
             }
             
             self.executeOnMain {
                 self.mapView.addAnnotation(mapPointAnnotation)
                 self.presentPointDetailView()
-                
             }
         })
         return true

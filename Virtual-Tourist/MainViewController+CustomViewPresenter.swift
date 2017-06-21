@@ -12,9 +12,15 @@ import MapKit
 
 extension MainViewController {
     func presentPhotosViewController() {
-        let annotation = mapView.selectedAnnotations[0]
+        if mapView.selectedAnnotations.count != 0 {
+            print(mapView.selectedAnnotations)
+            let selectedAnnotations = mapView.selectedAnnotations
+            for selectedAnnotation in selectedAnnotations {
+                mapView.deselectAnnotation(selectedAnnotation, animated: false)
+            }
+        }
         performSegue(withIdentifier: "Show Photos", sender: nil)
-        mapView.deselectAnnotation(annotation, animated: false)
+        
     }
     
     func presentPointDetailView() {

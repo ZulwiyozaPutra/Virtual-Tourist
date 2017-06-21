@@ -29,9 +29,8 @@ extension MainViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if !editMode {
-            let pointAnnotation = view.annotation! as? MKPointAnnotation
-            self.activeMapPointAnnotation = pointAnnotation
-            print(activeMapPointAnnotation)
+            let mapPointAnnotation = view.annotation! as? MKPointAnnotation
+            self.activeMapPointAnnotation = mapPointAnnotation
             self.presentPointDetailView()
         } else {
             self.activeMapPointAnnotation = nil
