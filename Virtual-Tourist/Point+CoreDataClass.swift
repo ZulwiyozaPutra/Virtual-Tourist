@@ -23,7 +23,6 @@ public class Point: NSManagedObject {
         } else {
             fatalError("Unable to find the entity named Point")
         }
-        
     }
 
 }

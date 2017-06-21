@@ -132,6 +132,9 @@ class PhotosViewController: ViewController {
     
     func showNewPhotos() {
         
+        self.dismissRefresherView()
+        self.isEditing = false
+        
         guard isConnectedToNetwork() == true else {
             presentErrorAlertController("Error", alertMessage: "Plese connect to the internet and try again")
             return
@@ -140,6 +143,7 @@ class PhotosViewController: ViewController {
         removeFromCoreData(photos: photos)
         photos.removeAll()
         setNoDataLabel()
+        self.collectionView.allowsMultipleSelection = false
         collectionView.reloadData()
         let location = CLLocation(latitude: (activePoint?.latitude)!, longitude: (activePoint?.longitude)!)
         
@@ -155,8 +159,10 @@ class PhotosViewController: ViewController {
                     self.photos = self.preloadSavedPhotos()!
                     self.noDataLabel.removeFromSuperview()
                     self.showSavedPhotos()
+                    
                 } else {
                     self.showSavedPhotos()
+                    
                 }
             }
         }

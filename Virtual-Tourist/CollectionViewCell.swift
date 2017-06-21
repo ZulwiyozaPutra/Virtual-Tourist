@@ -17,6 +17,7 @@ class CollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.activityIndicator.startAnimating()
+        
     }
     
     //Get Photos
@@ -39,7 +40,6 @@ class CollectionViewCell: UICollectionViewCell {
             if error == nil {
                 
                 DispatchQueue.main.async {
-                    
                     self.imageView.image = UIImage(data: data! as Data)
                     self.activityIndicator.stopAnimating()
                     self.saveImageDataToCoreData(photo: photo, imageData: data! as NSData)

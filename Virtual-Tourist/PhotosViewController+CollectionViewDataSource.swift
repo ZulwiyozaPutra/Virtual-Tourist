@@ -16,6 +16,8 @@ extension PhotosViewController: UICollectionViewDataSource {
         let photo = photos[indexPath.row]
         cell.activityIndicator.startAnimating()
         cell.initWithPhoto(photo)
+        cell.contentView.alpha = 1.0
+        photo.index = Int16(indexPath.row)
         return cell
 
     }
