@@ -18,7 +18,7 @@ class PhotosViewController: ViewController {
     
     var photos: [Photo] = []
     
-    var activeAnnotationPoint: AnnotationPoint!
+    var activePoint: Point!
     var pointAnnotation: MKPointAnnotation!
     
     override func viewDidLoad() {
@@ -44,9 +44,7 @@ class PhotosViewController: ViewController {
         if savedPhotos != nil && savedPhotos?.count != 0 {
             photos = savedPhotos!
             showSavedPhotos()
-            
         } else {
-            
             showNewPhotos()
         }
     }
@@ -63,15 +61,16 @@ class PhotosViewController: ViewController {
         photos.removeAll()
         collectionView.reloadData()
         
-        let location = CLLocation(latitude: (activeAnnotationPoint?.latitude)!, longitude: (activeAnnotationPoint?.longitude)!)
+        let location = CLLocation(latitude: (activePoint?.latitude)!, longitude: (activePoint?.longitude)!)
         
         FlickrClient.getFlickrImages(location: location) { (error: Error?, flickrImages: [FlickrImage]?) in
+            
             guard error == nil else {
                 fatalError(error.debugDescription)
             }
             
             self.executeOnMain {
-                self.addToCoreData(of: flickrImages!, at: self.activeAnnotationPoint)t
+                self.addToCoreData(of: flickrImages!, at: self.activePoint)
                 self.photos = self.preloadSavedPhotos()!
                 self.showSavedPhotos()
             }
@@ -88,13 +87,11 @@ class PhotosViewController: ViewController {
             
             let photosCount = try fetchedResultsController.managedObjectContext.count(for: fetchedResultsController.fetchRequest)
             
-            print(photosCount)
-            
             for index in 0..<photosCount {
                 photos.append(fetchedResultsController.object(at: IndexPath(row: index, section: 0)) as! Photo)
             }
             
-            return photos
+            return photos.sorted(by: {$0.index < $1.index})
             
         } catch {
             
@@ -110,30 +107,22 @@ class PhotosViewController: ViewController {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
         fetchRequest.sortDescriptors = []
         
-        fetchRequest.predicate = NSPredicate(format: "annotationPoint = %@", argumentArray: [activeAnnotationPoint!])
+        fetchRequest.predicate = NSPredicate(format: "point = %@", argumentArray: [activePoint!])
         
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: stack.context, sectionNameKeyPath: nil, cacheName: nil)
     }
     
-    func addToCoreData(of objects: [FlickrImage], at entity: AnnotationPoint?) {
-        
-        let amountOfObjects = objects.count
-        print(amountOfObjects)
-        for i in 0..<amountOfObjects {
-            do {
-                let delegate = UIApplication.shared.delegate as! AppDelegate
-                let stack = delegate.stack
-                let photo = Photo(index: i, imageURL: objects[i].imageURL(), imageData: nil, context: stack.context)
-                photo.annotationPoint = entity!
-                try coreDataStack().saveContext()
-            } catch {
-                print("Add Core Data Failed")
-            }
+    func addToCoreData(of objects: [FlickrImage], at entity: Point?) {
+
+        for index in 0..<objects.count {
+            let photo = Photo(index: index, imageURL: objects[index].imageURL(), imageData: nil, context: coreDataStack().context)
+            photo.point = entity!
+            photos.append(photo)
+
         }
     }
     
     func removeFromCoreData(photos: [Photo]) {
-        
         for photo in photos {
             coreDataStack().context.delete(photo)
         }

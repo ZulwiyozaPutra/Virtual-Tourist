@@ -15,8 +15,6 @@ class ViewController: UIViewController {
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
     
     let activityIndicatorBackgroundView = UIView()
-    
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +32,4 @@ extension ViewController: NSFetchedResultsControllerDelegate {
         return delegate.stack
     }
     
-    
-
 }

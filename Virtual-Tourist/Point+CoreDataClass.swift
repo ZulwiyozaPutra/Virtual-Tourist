@@ -1,5 +1,5 @@
 //
-//  AnnotationPoint+CoreDataClass.swift
+//  Point+CoreDataClass.swift
 //  Virtual-Tourist
 //
 //  Created by Zulwiyoza Putra on 6/20/17.
@@ -10,20 +10,20 @@ import Foundation
 import CoreData
 import MapKit
 
-@objc(AnnotationPoint)
-public class AnnotationPoint: NSManagedObject {
+@objc(Point)
+public class Point: NSManagedObject {
     
-    convenience init(index: Int, annotation: MKPointAnnotation, context: NSManagedObjectContext) {
-        if let entity = NSEntityDescription.entity(forEntityName: "AnnotationPoint", in: context) {
+    convenience init(annotation: MKPointAnnotation, context: NSManagedObjectContext) {
+        if let entity = NSEntityDescription.entity(forEntityName: "Point", in: context) {
             self.init(entity: entity, insertInto: context)
-            self.index = Int16(index)
             self.latitude = Double(annotation.coordinate.latitude)
             self.longitude = Double(annotation.coordinate.longitude)
             self.title = annotation.title
             self.subtitle = annotation.subtitle
         } else {
-            fatalError("Unable to find the entity named AnnotationPoint")
+            fatalError("Unable to find the entity named Point")
         }
+        
     }
 
 }

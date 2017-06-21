@@ -1,5 +1,5 @@
 //
-//  AnnotationPoint+CoreDataProperties.swift
+//  Point+CoreDataProperties.swift
 //  Virtual-Tourist
 //
 //  Created by Zulwiyoza Putra on 6/20/17.
@@ -10,23 +10,22 @@ import Foundation
 import CoreData
 
 
-extension AnnotationPoint {
+extension Point {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<AnnotationPoint> {
-        return NSFetchRequest<AnnotationPoint>(entityName: "AnnotationPoint")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<Point> {
+        return NSFetchRequest<Point>(entityName: "Point")
     }
 
+    @NSManaged public var title: String?
+    @NSManaged public var subtitle: String?
     @NSManaged public var latitude: Double
     @NSManaged public var longitude: Double
-    @NSManaged public var subtitle: String?
-    @NSManaged public var title: String?
-    @NSManaged public var index: Int16
     @NSManaged public var photos: NSSet?
 
 }
 
 // MARK: Generated accessors for photos
-extension AnnotationPoint {
+extension Point {
 
     @objc(addPhotosObject:)
     @NSManaged public func addToPhotos(_ value: Photo)

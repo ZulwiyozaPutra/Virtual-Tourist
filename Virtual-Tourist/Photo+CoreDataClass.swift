@@ -11,7 +11,7 @@ import CoreData
 
 @objc(Photo)
 public class Photo: NSManagedObject {
-    
+
     convenience init(index: Int, imageURL: String, imageData: NSData?, context: NSManagedObjectContext) {
         if let entity = NSEntityDescription.entity(forEntityName: "Photo", in: context) {
             self.init(entity: entity, insertInto: context)
@@ -19,7 +19,7 @@ public class Photo: NSManagedObject {
             self.imageURL = imageURL
             self.imageData = imageData ?? nil
         } else {
-            fatalError("Unable to find the entity named AnnotationPoint")
+            fatalError("Unable to find the entity named Photo")
         }
     }
 }

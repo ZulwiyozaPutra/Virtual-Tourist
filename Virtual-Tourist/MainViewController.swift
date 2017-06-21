@@ -20,9 +20,9 @@ class MainViewController: ViewController {
     
     var editMode = false
     
-    var annotationPoints: [AnnotationPoint]? = nil
+    var points: [Point]? = nil
     
-    var activeAnnotationPoint: AnnotationPoint? = nil
+    var activeMapAnnotation: MKPointAnnotation? = nil
     
     @IBAction func unwindToMain(segue: UIStoryboardSegue) {
         print("unwind!")
@@ -42,25 +42,19 @@ class MainViewController: ViewController {
         mapView.addGestureRecognizer(longPressGestureRecognizer)
         mapView.delegate = self
         
-        let preLoadAnnotationPoints = preloadSavedAnnotationPoints()
+        let savedPoints = preloadSavedPoints()
         
-        if preLoadAnnotationPoints != nil {
+        if savedPoints != nil {
             
-            let annotationPoints = preLoadAnnotationPoints
-            var points = [MKPointAnnotation]()
-            
-            for annotationPoint in annotationPoints! {
-                let point = MKPointAnnotation()
-                let coordinate = CLLocationCoordinate2DMake(annotationPoint.latitude, annotationPoint.longitude)
-                point.coordinate = coordinate
-                point.title = annotationPoint.title
-                point.subtitle = annotationPoint.subtitle
-                points.append(point)
-            }
-            
-            self.executeOnMain {
-                self.annotationPoints = annotationPoints
-                self.mapView.addAnnotations(points)
+            points = savedPoints
+
+            for point in points! {
+                let annotation = MKPointAnnotation()
+                let coordinate = CLLocationCoordinate2DMake(point.latitude, point.longitude)
+                annotation.coordinate = coordinate
+                annotation.title = point.title
+                annotation.subtitle = point.subtitle
+                self.mapView.addAnnotation(annotation)
             }
         }
     }
@@ -70,10 +64,31 @@ class MainViewController: ViewController {
         
         let stack = coreDataStack()
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AnnotationPoint")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Point")
         fetchRequest.sortDescriptors = []
         
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: stack.context, sectionNameKeyPath: nil, cacheName: nil)
+    }
+    
+    //Load Saved Pin
+    func preloadSavedPoints() -> [Point]? {
+        do {
+            var points: [Point] = []
+            
+            let fetchedResultsController = self.fetchedResultsController()
+            try fetchedResultsController.performFetch()
+            
+            let countPoints = try fetchedResultsController.managedObjectContext.count(for: fetchedResultsController.fetchRequest)
+            
+            for index in 0..<countPoints {
+                points.append(fetchedResultsController.object(at: IndexPath(row: index, section: 0)) as! Point)
+            }
+            return points
+            
+        } catch {
+            
+            return nil
+        }
     }
     
     func annotationDetailViewInstanceFromNib() -> AnnotationDetailView {
@@ -127,64 +142,13 @@ class MainViewController: ViewController {
         
     }
     
-    fileprivate func addAnnotationToMap(point: CGPoint) {
-        
-        let point = CGPoint(x: point.x, y: point.y)
-        let coordinate = mapView.convert(point, toCoordinateFrom: self.view)
-        
-        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        
-        getLocation(location: location, completion: { (placemark: CLPlacemark) in
-            
-            let annotation = MKPointAnnotation()
-            annotation.title = "\(String(describing: placemark.locality!)), \(placemark.administrativeArea ?? "") \(placemark.postalCode ?? "")"
-            annotation.subtitle = placemark.country
-            annotation.coordinate = placemark.location!.coordinate
-            
-            let annotationPoint = AnnotationPoint(index: 0, annotation: annotation, context: self.coreDataStack().context)
-            self.addToCoreData(of: annotation)
-            
-            self.executeOnMain {
-                self.mapView.addAnnotation(annotation)
-                self.activeAnnotationPoint = annotationPoint
-                self.presentAnnotationPointDetailView()
-                
-            }
-        })
-    }
-    
-    
-    
-    //Load Saved Pin
-    
-    
-    func preloadSavedAnnotationPoints() -> [AnnotationPoint]? {
-        do {
-            var annotationPoints: [AnnotationPoint] = []
-            
-            let fetchedResultsController = self.fetchedResultsController()
-            try fetchedResultsController.performFetch()
-            
-            let annotationPointsCount = try fetchedResultsController.managedObjectContext.count(for: fetchedResultsController.fetchRequest)
-            
-            print(annotationPointsCount)
-            
-            for index in 0..<annotationPointsCount {
-                annotationPoints.append(fetchedResultsController.object(at: IndexPath(row: index, section: 0)) as! AnnotationPoint)
-            }
-            return annotationPoints
-            
-        } catch {
-            
-            return nil
-        }
-    }
     
     //Add Core Data
     
     func addToCoreData(of object: MKPointAnnotation) {
         do {
-            _ = AnnotationPoint(index: 0, annotation: object, context: coreDataStack().context)
+            let point = Point(annotation: object, context: coreDataStack().context)
+            points?.append(point)
             try coreDataStack().saveContext()
         } catch {
             print("Add Core Data Failed")
@@ -197,10 +161,11 @@ class MainViewController: ViewController {
     
     func removeFromCoreData(of point: MKPointAnnotation) {
         
-        for annotationPoint in annotationPoints! {
-            if annotationPoint.latitude == point.coordinate.latitude && annotationPoint.longitude == point.coordinate.longitude {
+        for index in 0..<points!.count {
+            if points![index].latitude == point.coordinate.latitude && points![index].longitude == point.coordinate.longitude {
                 do {
-                    coreDataStack().context.delete(annotationPoint)
+                    coreDataStack().context.delete(points![index])
+                    points?.remove(at: index)
                     try coreDataStack().saveContext()
                 } catch {
                     print("Remove Core Data Failed")
@@ -213,12 +178,13 @@ class MainViewController: ViewController {
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let photosViewController = segue.destination as? PhotosViewController
-        let annotationPoint = self.activeAnnotationPoint!
         
-        photosViewController?.activeAnnotationPoint = annotationPoint
-        dismissAnnotationDetailView()
+        for point in points! {
+            if activeMapAnnotation!.coordinate.latitude == point.latitude && activeMapAnnotation!.coordinate.longitude == point.longitude {
+                photosViewController?.activePoint = point
+            }
+        }
         
-        self.activeAnnotationPoint = nil
         let backItem = UIBarButtonItem()
         backItem.title = "Back"
         navigationItem.backBarButtonItem = backItem
@@ -228,8 +194,36 @@ class MainViewController: ViewController {
 
 extension MainViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        
         let gestureTouchPoint = gestureRecognizer.location(in: mapView)
-        addAnnotationToMap(point: gestureTouchPoint)
+        let point = CGPoint(x: gestureTouchPoint.x, y: gestureTouchPoint.y)
+        let coordinate = mapView.convert(point, toCoordinateFrom: self.view)
+        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        
+        getLocation(location: location, completion: { (placemark: CLPlacemark) in
+            
+            let mapPointAnnotation = MKPointAnnotation()
+            mapPointAnnotation.title = "\(String(describing: placemark.locality!)), \(placemark.administrativeArea ?? "") \(placemark.postalCode ?? "")"
+            mapPointAnnotation.subtitle = placemark.country
+            mapPointAnnotation.coordinate = placemark.location!.coordinate
+            self.addToCoreData(of: mapPointAnnotation)
+            
+            var mapPointAnnotationToActivate = MKPointAnnotation()
+            
+            for point in self.points! {
+                if point.latitude == mapPointAnnotation.coordinate.latitude && point.longitude == mapPointAnnotation.coordinate.longitude {
+                    mapPointAnnotationToActivate = mapPointAnnotation
+                }
+            }
+            
+            self.activeMapAnnotation = mapPointAnnotationToActivate
+            
+            self.executeOnMain {
+                self.mapView.addAnnotation(mapPointAnnotationToActivate)
+                self.presentPointDetailView()
+                
+            }
+        })
         return true
     }
 }

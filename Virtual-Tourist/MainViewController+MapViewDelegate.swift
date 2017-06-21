@@ -27,24 +27,14 @@ extension MainViewController: MKMapViewDelegate {
         
     }
     
-    func mapViewWillStartLoadingMap(_ mapView: MKMapView) {
-        print("Loading Map")
-    }
-    
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if !editMode {
             let pointAnnotation = view.annotation! as? MKPointAnnotation
-            for annotationPoint in annotationPoints! {
-                if pointAnnotation?.coordinate.latitude == annotationPoint.latitude && pointAnnotation?.coordinate.longitude == annotationPoint.longitude {
-                    
-                    self.activeAnnotationPoint = annotationPoint
-                    print(self.activeAnnotationPoint)
-                }
-            }
+            self.activeMapAnnotation = pointAnnotation
 
-            self.presentAnnotationPointDetailView()
+            self.presentPointDetailView()
         } else {
-            self.activeAnnotationPoint = nil
+            self.activeMapAnnotation = nil
             let annotation = view.annotation! as? MKPointAnnotation
             removeFromCoreData(of: annotation!)
             mapView.removeAnnotation(annotation!)

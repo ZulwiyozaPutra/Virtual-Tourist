@@ -17,11 +17,11 @@ extension MainViewController {
         mapView.deselectAnnotation(annotation, animated: false)
     }
     
-    func presentAnnotationPointDetailView() {
+    func presentPointDetailView() {
         
         self.annotationDetailView.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: self.view.frame.height)
-        self.annotationDetailView.firstLineSubtitle.text = activeAnnotationPoint!.title
-        self.annotationDetailView.secondLineSubtitle.text = activeAnnotationPoint!.subtitle
+        self.annotationDetailView.firstLineSubtitle.text = activeMapAnnotation!.title
+        self.annotationDetailView.secondLineSubtitle.text = activeMapAnnotation!.subtitle
         self.view.addSubview(self.annotationDetailView)
         
         UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseIn, animations: {
