@@ -30,11 +30,10 @@ extension MainViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if !editMode {
             let pointAnnotation = view.annotation! as? MKPointAnnotation
-            self.activeMapAnnotation = pointAnnotation
-
+            self.activeMapPointAnnotation = pointAnnotation
             self.presentPointDetailView()
         } else {
-            self.activeMapAnnotation = nil
+            self.activeMapPointAnnotation = nil
             let annotation = view.annotation! as? MKPointAnnotation
             removeFromCoreData(of: annotation!)
             mapView.removeAnnotation(annotation!)

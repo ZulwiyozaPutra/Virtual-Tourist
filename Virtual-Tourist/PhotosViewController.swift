@@ -19,6 +19,7 @@ class PhotosViewController: ViewController {
     var photos: [Photo] = []
     
     var activePoint: Point!
+    var activeMapPointAnnotation: MKPointAnnotation!
     var pointAnnotation: MKPointAnnotation!
     
     override func viewDidLoad() {

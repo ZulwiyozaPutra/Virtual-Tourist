@@ -22,7 +22,7 @@ class MainViewController: ViewController {
     
     var points: [Point]? = nil
     
-    var activeMapAnnotation: MKPointAnnotation? = nil
+    var activeMapPointAnnotation: MKPointAnnotation? = nil
     
     @IBAction func unwindToMain(segue: UIStoryboardSegue) {
         print("unwind!")
@@ -63,10 +63,8 @@ class MainViewController: ViewController {
     func fetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult> {
         
         let stack = coreDataStack()
-        
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Point")
         fetchRequest.sortDescriptors = []
-        
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: stack.context, sectionNameKeyPath: nil, cacheName: nil)
     }
     
@@ -77,16 +75,13 @@ class MainViewController: ViewController {
             
             let fetchedResultsController = self.fetchedResultsController()
             try fetchedResultsController.performFetch()
-            
             let countPoints = try fetchedResultsController.managedObjectContext.count(for: fetchedResultsController.fetchRequest)
-            
             for index in 0..<countPoints {
                 points.append(fetchedResultsController.object(at: IndexPath(row: index, section: 0)) as! Point)
             }
             return points
             
         } catch {
-            
             return nil
         }
     }
@@ -110,16 +105,13 @@ class MainViewController: ViewController {
     }
     
     func getLocation(location: CLLocation, completion: @escaping (_ placemark: CLPlacemark) -> Void) {
-        
         let geoCoder = CLGeocoder()
-        
         geoCoder.reverseGeocodeLocation(location) { (placemarks: [CLPlacemark]?, error: Error?) in
             guard error == nil else {
                 self.presentErrorAlertController("Couldn't Find Location", alertMessage: "\(error.debugDescription), Please Try Again")
                 self.state(state: .normal)
                 return
             }
-            
             guard placemarks != nil else {
                 self.presentErrorAlertController("Couldn't Find Location", alertMessage: "Please Try Again")
                 return
@@ -180,8 +172,9 @@ class MainViewController: ViewController {
         let photosViewController = segue.destination as? PhotosViewController
         
         for point in points! {
-            if activeMapAnnotation!.coordinate.latitude == point.latitude && activeMapAnnotation!.coordinate.longitude == point.longitude {
+            if activeMapPointAnnotation!.coordinate.latitude == point.latitude && activeMapPointAnnotation!.coordinate.longitude == point.longitude {
                 photosViewController?.activePoint = point
+                photosViewController?.activeMapPointAnnotation = activeMapPointAnnotation
             }
         }
         
@@ -208,18 +201,14 @@ extension MainViewController: UIGestureRecognizerDelegate {
             mapPointAnnotation.coordinate = placemark.location!.coordinate
             self.addToCoreData(of: mapPointAnnotation)
             
-            var mapPointAnnotationToActivate = MKPointAnnotation()
-            
             for point in self.points! {
                 if point.latitude == mapPointAnnotation.coordinate.latitude && point.longitude == mapPointAnnotation.coordinate.longitude {
-                    mapPointAnnotationToActivate = mapPointAnnotation
+                    self.activeMapPointAnnotation = mapPointAnnotation
                 }
             }
             
-            self.activeMapAnnotation = mapPointAnnotationToActivate
-            
             self.executeOnMain {
-                self.mapView.addAnnotation(mapPointAnnotationToActivate)
+                self.mapView.addAnnotation(mapPointAnnotation)
                 self.presentPointDetailView()
                 
             }
