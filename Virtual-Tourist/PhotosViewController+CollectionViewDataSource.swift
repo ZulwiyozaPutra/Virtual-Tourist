@@ -13,7 +13,9 @@ extension PhotosViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Photo's Cell", for: indexPath) as! CollectionViewCell
+        cell.prepareForReuse()
         let photo = photos[indexPath.row]
+        cell.imageView.image = nil
         cell.activityIndicator.startAnimating()
         cell.initWithPhoto(photo)
         cell.contentView.alpha = 1.0

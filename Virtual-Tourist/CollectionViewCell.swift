@@ -16,6 +16,7 @@ class CollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        prepareForReuse()
         self.activityIndicator.startAnimating()
         
     }
