@@ -10,44 +10,46 @@ import Foundation
 import UIKit
 
 extension PhotosViewController: UICollectionViewDelegate {
-    func selectedToDeleteFromIndexPath(_ indexPathArray: [IndexPath]) -> [Int] {
-        var selected:[Int] = []
-        
-        for indexPath in indexPathArray {
-            selected.append(indexPath.row)
-        }
-        return selected
-    }
     
+    func getIndexesFromSelectedIndexPath() -> [Int] {
+        var indexes:[Int] = []
+        
+        let indexPaths = collectionView.indexPathsForSelectedItems!
+        
+        for indexPath in indexPaths {
+            indexes.append(indexPath.row)
+        }
+        
+        return indexes
+    }
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let cell = collectionView.cellForItem(at: indexPath)
         
         guard self.isEditing == true else {
             return
         }
         
-        selectedIndexCells = selectedToDeleteFromIndexPath(collectionView.indexPathsForSelectedItems!)
-        let cell = collectionView.cellForItem(at: indexPath)
+        print(collectionView.indexPathsForSelectedItems!)
         
         DispatchQueue.main.async {
-            
             cell?.contentView.alpha = 0.5
         }
-        
+
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         
+        let cell = collectionView.cellForItem(at: indexPath)
+        
         guard self.isEditing == true else {
             return
         }
         
-        selectedIndexCells = selectedToDeleteFromIndexPath(collectionView.indexPathsForSelectedItems!)
-        let cell = collectionView.cellForItem(at: indexPath)
+        print(collectionView.indexPathsForSelectedItems!)
         
-        DispatchQueue.main.async {
-            
-            cell?.contentView.alpha = 1
-        }
+        cell?.contentView.alpha = 1.0
     }
 
     

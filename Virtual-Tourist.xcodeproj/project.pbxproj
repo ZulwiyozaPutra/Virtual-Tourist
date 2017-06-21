@@ -16,7 +16,6 @@
 		6E31C49E1EF7EC6900D07327 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E31C49D1EF7EC6900D07327 /* AppDelegate.swift */; };
 		6E31C4A01EF7EC6900D07327 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E31C49F1EF7EC6900D07327 /* ViewController.swift */; };
 		6E31C4A31EF7EC6900D07327 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E31C4A11EF7EC6900D07327 /* Main.storyboard */; };
-		6E31C4A81EF7EC6900D07327 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E31C4A71EF7EC6900D07327 /* Assets.xcassets */; };
 		6E31C4AB1EF7EC6900D07327 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E31C4A91EF7EC6900D07327 /* LaunchScreen.storyboard */; };
 		6E31C4B61EF7EC6900D07327 /* Virtual_TouristTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E31C4B51EF7EC6900D07327 /* Virtual_TouristTests.swift */; };
 		6E31C4C11EF7EC6900D07327 /* Virtual_TouristUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E31C4C01EF7EC6900D07327 /* Virtual_TouristUITests.swift */; };
@@ -41,6 +40,7 @@
 		6EA361151EFA86850063AD51 /* RefresherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA361141EFA86850063AD51 /* RefresherView.swift */; };
 		6EA361171EFA87F70063AD51 /* PhotosViewController+CustomViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA361161EFA87F70063AD51 /* PhotosViewController+CustomViewPresenter.swift */; };
 		6EA361191EFA927A0063AD51 /* PhotosViewController+CollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA361181EFA927A0063AD51 /* PhotosViewController+CollectionViewDelegate.swift */; };
+		6EA3611B1EFAAF0A0063AD51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6EA3611A1EFAAF0A0063AD51 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,7 +71,6 @@
 		6E31C49D1EF7EC6900D07327 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6E31C49F1EF7EC6900D07327 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		6E31C4A21EF7EC6900D07327 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		6E31C4A71EF7EC6900D07327 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6E31C4AA1EF7EC6900D07327 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6E31C4AC1EF7EC6900D07327 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6E31C4B11EF7EC6900D07327 /* Virtual-TouristTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Virtual-TouristTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,6 +100,7 @@
 		6EA361141EFA86850063AD51 /* RefresherView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefresherView.swift; sourceTree = "<group>"; };
 		6EA361161EFA87F70063AD51 /* PhotosViewController+CustomViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PhotosViewController+CustomViewPresenter.swift"; sourceTree = "<group>"; };
 		6EA361181EFA927A0063AD51 /* PhotosViewController+CollectionViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PhotosViewController+CollectionViewDelegate.swift"; sourceTree = "<group>"; };
+		6EA3611A1EFAAF0A0063AD51 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,7 +171,7 @@
 				6E1A37A31EF8A87E00CF473F /* EditingModeDescriptionView.xib */,
 				6EA361121EFA85A00063AD51 /* RefresherView.xib */,
 				6E0B393C1EF8417C00BD1EEF /* CollectionViewCell.xib */,
-				6E31C4A71EF7EC6900D07327 /* Assets.xcassets */,
+				6EA3611A1EFAAF0A0063AD51 /* Assets.xcassets */,
 				6E31C4AC1EF7EC6900D07327 /* Info.plist */,
 			);
 			path = "Virtual-Tourist";
@@ -334,9 +334,9 @@
 			files = (
 				6EA361131EFA85A00063AD51 /* RefresherView.xib in Resources */,
 				6E31C4AB1EF7EC6900D07327 /* LaunchScreen.storyboard in Resources */,
-				6E31C4A81EF7EC6900D07327 /* Assets.xcassets in Resources */,
 				6E31C4EB1EF81CAC00D07327 /* AnnotationDetailView.xib in Resources */,
 				6E1A37A41EF8A87E00CF473F /* EditingModeDescriptionView.xib in Resources */,
+				6EA3611B1EFAAF0A0063AD51 /* Assets.xcassets in Resources */,
 				6E31C4A31EF7EC6900D07327 /* Main.storyboard in Resources */,
 				6E0B393E1EF8417C00BD1EEF /* CollectionViewCell.xib in Resources */,
 			);

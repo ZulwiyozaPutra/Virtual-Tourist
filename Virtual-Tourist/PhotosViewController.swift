@@ -30,7 +30,7 @@ class PhotosViewController: ViewController {
     
     var mapPointAnnotation: MKPointAnnotation!
     
-    var selectedIndexCells = [Int]()
+    var selectedIndexes = [Int]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,14 +61,7 @@ class PhotosViewController: ViewController {
         self.collectionView.register(UINib(nibName: "CollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Photo's Cell")
         
         
-        noDataLabel.text = "No Photos Yet"
-        noDataLabel.frame.size.width = self.view.frame.width
-        noDataLabel.frame.size.height = 30
-        noDataLabel.textAlignment = .center
-        noDataLabel.center.x = self.view.frame.width/2
-        noDataLabel.center.y = self.view.frame.height/2 - (self.navigationController?.navigationBar.frame.height)!
-        noDataLabel.textColor = UIColor.gray
-        self.view.addSubview(noDataLabel)
+        setNoDataLabel()
         
         //Fetch Photos
         let savedPhotos = preloadSavedPhotos()
@@ -91,6 +84,31 @@ class PhotosViewController: ViewController {
         }
     }
     
+    func setNoDataLabel() {
+        noDataLabel.text = "No Photos Yet"
+        noDataLabel.frame.size.width = self.view.frame.width
+        noDataLabel.frame.size.height = 30
+        noDataLabel.textAlignment = .center
+        noDataLabel.center.x = self.view.frame.width/2
+        noDataLabel.center.y = self.view.frame.height/2 - (self.navigationController?.navigationBar.frame.height)!
+        noDataLabel.textColor = UIColor.gray
+        self.view.addSubview(noDataLabel)
+    }
+    
+    func deleteSelectedPhotos() {
+        removeSelectedPhotosAtCoreData {
+            self.executeOnMain {
+                self.isEditing = false
+                for cell in self.collectionView.visibleCells {
+                    cell.alpha = 1.0
+                }
+                self.collectionView.allowsMultipleSelection = false
+                self.dismissRefresherView()
+                self.collectionView.reloadData()
+            }
+        }
+    }
+    
     //Add Annotation
     func setupPointAnnotation() {
         let annotation = MKPointAnnotation()
@@ -102,7 +120,7 @@ class PhotosViewController: ViewController {
     
     func refresherViewInstanceFromNib() -> RefresherView {
         let instance = UINib(nibName: "RefresherView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! RefresherView
-        
+        instance.deleteButton.addTarget(self, action: #selector(deleteSelectedPhotos), for: .touchUpInside)
         instance.refresherButton.addTarget(self, action: #selector(showNewPhotos), for: .touchUpInside)
         return instance
     }
@@ -117,8 +135,8 @@ class PhotosViewController: ViewController {
         
         removeFromCoreData(photos: photos)
         photos.removeAll()
+        setNoDataLabel()
         collectionView.reloadData()
-        
         let location = CLLocation(latitude: (activePoint?.latitude)!, longitude: (activePoint?.longitude)!)
         
         FlickrClient.getFlickrImages(location: location) { (error: Error?, flickrImages: [FlickrImage]?) in
@@ -187,12 +205,33 @@ class PhotosViewController: ViewController {
             coreDataStack().context.delete(photo)
         }
     }
+    
+    //Remove Photos
+    
+    func removeSelectedPhotosAtCoreData(completion: @escaping () -> Void) {
+        
+        print(photos.count)
+        
+        for index in 0..<photos.count {
+            
+            if getIndexesFromSelectedIndexPath().contains(index) {
+                let indexPath = IndexPath(row: index, section: 0)
+                collectionView.deselectItem(at: indexPath, animated: true)
+                print(photos.count)
+                photos.remove(at: index)
+                coreDataStack().context.delete(photos[index])
+            }
+        }
+        completion()
+    }
 
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         if editing {
+            collectionView?.allowsMultipleSelection = true
             presentRefresherView()
         } else {
+            collectionView?.allowsMultipleSelection = false
             dismissRefresherView()
         }
     }
