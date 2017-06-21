@@ -162,7 +162,6 @@
 				6E1A37A31EF8A87E00CF473F /* EditingModeDescriptionView.xib */,
 				6E0B393C1EF8417C00BD1EEF /* CollectionViewCell.xib */,
 				6E31C4A71EF7EC6900D07327 /* Assets.xcassets */,
-				6EA361071EFA44560063AD51 /* Virtual-Tourist.xcdatamodeld */,
 				6E31C4AC1EF7EC6900D07327 /* Info.plist */,
 			);
 			path = "Virtual-Tourist";
@@ -201,6 +200,7 @@
 		6E6C11AA1EF9057100516A94 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				6EA361071EFA44560063AD51 /* Virtual-Tourist.xcdatamodeld */,
 				6EA360F21EFA42930063AD51 /* CoreDataStack.swift */,
 				6EA3610A1EFA45220063AD51 /* Photo+CoreDataClass.swift */,
 				6EA3610B1EFA45220063AD51 /* Photo+CoreDataProperties.swift */,

@@ -31,6 +31,7 @@ extension MainViewController: MKMapViewDelegate {
         if !editMode {
             let pointAnnotation = view.annotation! as? MKPointAnnotation
             self.activeMapPointAnnotation = pointAnnotation
+            print(activeMapPointAnnotation)
             self.presentPointDetailView()
         } else {
             self.activeMapPointAnnotation = nil

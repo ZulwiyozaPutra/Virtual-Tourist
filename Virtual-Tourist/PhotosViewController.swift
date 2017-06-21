@@ -24,7 +24,7 @@ class PhotosViewController: ViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.navigationController?.navigationItem.leftBarButtonItem?.title = "Back"
         
         collectionView.dataSource = self
@@ -49,7 +49,16 @@ class PhotosViewController: ViewController {
             showNewPhotos()
         }
     }
-    
+
+    override func viewWillDisappear(_ animated : Bool) {
+        super.viewWillDisappear(animated)
+        if (self.isMovingFromParentViewController){
+            try? coreDataStack().saveContext()
+            let parent = navigationController?.parent as? MainViewController
+            parent?.activeMapPointAnnotation = activeMapPointAnnotation
+            parent?.presentPointDetailView()
+        }
+    }
     func showSavedPhotos() {
         executeOnMain {
             self.collectionView.reloadData()

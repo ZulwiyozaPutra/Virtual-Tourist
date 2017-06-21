@@ -170,11 +170,14 @@ class MainViewController: ViewController {
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let photosViewController = segue.destination as? PhotosViewController
-        
+        print(points)
+        print(activeMapPointAnnotation?.coordinate)
         for point in points! {
             if activeMapPointAnnotation!.coordinate.latitude == point.latitude && activeMapPointAnnotation!.coordinate.longitude == point.longitude {
                 photosViewController?.activePoint = point
                 photosViewController?.activeMapPointAnnotation = activeMapPointAnnotation
+                dismissAnnotationDetailView()
+                self.activeMapPointAnnotation = nil
             }
         }
         
