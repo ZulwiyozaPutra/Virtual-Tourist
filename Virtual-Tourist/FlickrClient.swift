@@ -16,7 +16,7 @@ class FlickrClient: NSObject {
         static let flickrAPIKey = "2a2ad0534c538cea62c640e0d2520400"
         static let flickrSearch = "flickr.photos.search"
         static let dataFormat = "json"
-        static let searchRangeKM = 5
+        static let searchRangeKM = 3
     }
     
     //Get Images

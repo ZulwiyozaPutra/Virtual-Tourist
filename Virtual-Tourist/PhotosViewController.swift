@@ -42,6 +42,7 @@ class PhotosViewController: ViewController {
         
         //Fetch Photos
         let savedPhotos = preloadSavedPhotos()
+        
         if savedPhotos != nil && savedPhotos?.count != 0 {
             photos = savedPhotos!
             showSavedPhotos()
@@ -80,9 +81,13 @@ class PhotosViewController: ViewController {
             }
             
             self.executeOnMain {
-                self.addToCoreData(of: flickrImages!, at: self.activePoint)
-                self.photos = self.preloadSavedPhotos()!
-                self.showSavedPhotos()
+                if flickrImages?.count != 0 {
+                    self.addToCoreData(of: flickrImages!, at: self.activePoint)
+                    self.photos = self.preloadSavedPhotos()!
+                    self.showSavedPhotos()
+                } else {
+                    self.showSavedPhotos()
+                }
             }
         }
     }
@@ -96,15 +101,12 @@ class PhotosViewController: ViewController {
             try fetchedResultsController.performFetch()
             
             let photosCount = try fetchedResultsController.managedObjectContext.count(for: fetchedResultsController.fetchRequest)
-            
             for index in 0..<photosCount {
                 photos.append(fetchedResultsController.object(at: IndexPath(row: index, section: 0)) as! Photo)
             }
-            
             return photos.sorted(by: {$0.index < $1.index})
             
         } catch {
-            
             return nil
         }
     }

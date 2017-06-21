@@ -37,7 +37,6 @@ extension MainViewController: MKMapViewDelegate {
             let annotation = view.annotation! as? MKPointAnnotation
             removeFromCoreData(of: annotation!)
             mapView.removeAnnotation(annotation!)
-            
         }
     }
     

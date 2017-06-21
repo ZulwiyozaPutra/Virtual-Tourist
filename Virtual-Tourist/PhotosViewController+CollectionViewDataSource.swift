@@ -12,11 +12,23 @@ import UIKit
 extension PhotosViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Photo's Cell", for: indexPath) as! CollectionViewCell
-        let photo = photos[indexPath.row]
-        cell.activityIndicator.startAnimating()
-        cell.initWithPhoto(photo)
-        return cell
+        if photos.count == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Photo's Cell", for: indexPath) as! CollectionViewCell
+            let rect = CGRect(x: 0, y: 0, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
+            let noDataLabel: UILabel = UILabel(frame: rect)
+            noDataLabel.text = "No Photos Yet"
+            noDataLabel.textAlignment = .center
+            noDataLabel.textColor = UIColor.gray
+            noDataLabel.sizeToFit()
+            cell.contentView.addSubview(noDataLabel)
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Photo's Cell", for: indexPath) as! CollectionViewCell
+            let photo = photos[indexPath.row]
+            cell.activityIndicator.startAnimating()
+            cell.initWithPhoto(photo)
+            return cell
+        }
 
     }
     

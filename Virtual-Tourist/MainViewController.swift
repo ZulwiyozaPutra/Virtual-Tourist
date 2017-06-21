@@ -96,9 +96,17 @@ class MainViewController: ViewController {
         instance.layer.mask = maskLayer
         instance.dismissButton.addTarget(self, action: #selector(dismissAnnotationDetailView), for: .touchUpInside)
         instance.showPhotosButton.addTarget(self, action: #selector(presentPhotosViewController), for: .touchUpInside)
+        instance.removeLocationButton.addTarget(self, action: #selector(removeMapPointAnnotation
+            ), for: .touchUpInside)
         return instance
     }
     
+    func removeMapPointAnnotation() {
+        removeFromCoreData(of: activeMapPointAnnotation!)
+        mapView.removeAnnotation(activeMapPointAnnotation!)
+        self.activeMapPointAnnotation = nil
+        dismissAnnotationDetailView()
+    }
     func editingModeDescriptionViewInstanceFromNib() -> UIView {
         let instance = UINib(nibName: "EditingModeDescriptionView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! UIView
         return instance
@@ -152,7 +160,6 @@ class MainViewController: ViewController {
     //Delete Core Data
     
     func removeFromCoreData(of point: MKPointAnnotation) {
-        
         for index in 0..<points!.count {
             if points![index].latitude == point.coordinate.latitude && points![index].longitude == point.coordinate.longitude {
                 do {
@@ -173,9 +180,6 @@ class MainViewController: ViewController {
         var pointToPresent = Point()
         
         for point in points! {
-            
-            
-            
             let isLatitudeMatch = activeMapPointAnnotation!.coordinate.latitude == point.latitude
             let isLongitudeMatch = activeMapPointAnnotation!.coordinate.longitude == point.longitude
             
