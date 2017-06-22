@@ -31,10 +31,12 @@ extension PhotosViewController: UICollectionViewDelegate {
             return
         }
         
-        print(collectionView.indexPathsForSelectedItems!)
+        print(collectionView.indexPathsForSelectedItems)
         
-        DispatchQueue.main.async {
+        if (collectionView.indexPathsForSelectedItems?.contains(indexPath))! {
             cell?.contentView.alpha = 0.5
+        } else {
+            cell?.contentView.alpha = 1.0
         }
 
     }
@@ -43,13 +45,19 @@ extension PhotosViewController: UICollectionViewDelegate {
         
         let cell = collectionView.cellForItem(at: indexPath)
         
+        
+        
         guard self.isEditing == true else {
             return
         }
         
-        print(collectionView.indexPathsForSelectedItems!)
+        print(collectionView.indexPathsForSelectedItems)
         
-        cell?.contentView.alpha = 1.0
+        if (collectionView.indexPathsForSelectedItems?.contains(indexPath))! {
+            cell?.contentView.alpha = 0.5
+        } else {
+            cell?.contentView.alpha = 1.0
+        }
     }
 
     

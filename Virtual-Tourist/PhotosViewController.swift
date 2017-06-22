@@ -219,19 +219,25 @@ class PhotosViewController: ViewController {
     //Remove Photos
     
     func removeSelectedPhotosAtCoreData(completion: @escaping () -> Void) {
+                
+        let indexes = getIndexesFromSelectedIndexPath().sorted { return $0 < $1 }
         
-        print(photos.count)
+        self.collectionView.allowsMultipleSelection = false
         
-        for index in 0..<photos.count {
-            
-            if getIndexesFromSelectedIndexPath().contains(index) {
-                let indexPath = IndexPath(row: index, section: 0)
-                collectionView.deselectItem(at: indexPath, animated: true)
-                print(photos.count)
-                photos.remove(at: index)
-                coreDataStack().context.delete(photos[index])
-            }
+        var counter = 0
+        
+        for index in indexes {
+            let indexPath = IndexPath(row: index, section: 0)
+            collectionView.deselectItem(at: indexPath, animated: true)
+            coreDataStack().context.delete(photos[index - counter])
+            photos.remove(at: index - counter)
+            counter += 1
         }
+        
+        self.collectionView.allowsMultipleSelection = true
+        
+        try? coreDataStack().saveContext()
+        
         completion()
     }
 

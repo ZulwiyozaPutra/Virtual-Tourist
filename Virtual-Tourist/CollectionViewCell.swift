@@ -19,6 +19,11 @@ class CollectionViewCell: UICollectionViewCell {
         prepareForReuse()
         self.activityIndicator.startAnimating()
         
+        if self.isSelected {
+            self.contentView.alpha = 0.5
+        } else {
+            self.contentView.alpha = 1.0
+        }
     }
     
     //Get Photos
