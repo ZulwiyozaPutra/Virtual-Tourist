@@ -31,13 +31,9 @@ extension PhotosViewController: UICollectionViewDelegate {
             return
         }
         
-        print(collectionView.indexPathsForSelectedItems)
+        print(collectionView.indexPathsForSelectedItems!)
         
-        if (collectionView.indexPathsForSelectedItems?.contains(indexPath))! {
-            cell?.contentView.alpha = 0.5
-        } else {
-            cell?.contentView.alpha = 1.0
-        }
+        cell?.contentView.alpha = 0.5
 
     }
     
@@ -51,13 +47,9 @@ extension PhotosViewController: UICollectionViewDelegate {
             return
         }
         
-        print(collectionView.indexPathsForSelectedItems)
-        
-        if (collectionView.indexPathsForSelectedItems?.contains(indexPath))! {
-            cell?.contentView.alpha = 0.5
-        } else {
-            cell?.contentView.alpha = 1.0
-        }
+        print(collectionView.indexPathsForSelectedItems!)
+
+        cell?.contentView.alpha = 1.0
     }
 
     
